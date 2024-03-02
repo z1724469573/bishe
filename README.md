@@ -33,9 +33,18 @@
 
 ## **安装教程**
 
-1. **克隆仓库到本地**：`git clone https://gitee.com/your-repo-url` 
+1. **克隆仓库到本地**：`git clone https://gitee.com/bestwishes0203/le-rongrong-smart-platform` 
 2. **安装依赖**：`npm install` 或 `yarn`
-3. **启动后端服务**：`npm run server` 或 `yarn server`
+3. **启动后端服务**：
+   - 在后端项目目录下，首先刷新项目依赖：
+     ```
+     mvn clean install
+     ```
+   - 然后执行以下命令来启动Spring Boot应用程序：
+     ```
+     mvn spring-boot:run
+     ```
+   - 或者，如果你使用的是IntelliJ IDEA，可以直接在IDE中添加服务或手动运行`main`方法来启动。
 4. **启动前端服务**：`npm run dev` 或 `yarn dev`
 5. **访问应用**：在浏览器中输入 `http://localhost:3000`（前端端口）和 `http://localhost:8080`（后端端口）
 
