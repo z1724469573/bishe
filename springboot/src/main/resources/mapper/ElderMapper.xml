@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.ElderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.springboot.entity.ElderEntity">
+        <id column="elder_id" property="elderId" />
+        <result column="elder_label" property="elderLabel" />
+        <result column="elder_content" property="elderContent" />
+        <result column="elder_tag" property="elderTag" />
+        <result column="elder_price" property="elderPrice" />
+        <result column="elder_address" property="elderAddress" />
+        <result column="elder_date" property="elderDate" />
+        <result column="elder_bed" property="elderBed" />
+        <result column="elder_cover" property="elderCover" />
+        <result column="elder_area" property="elderArea" />
+        <result column="elder_phone" property="elderPhone" />
+        <result column="elder_jw" property="elderJw" />
+        <result column="elder_wd" property="elderWd" />
+        <result column="elder_state" property="elderState" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        elder_id, elder_label, elder_content, elder_tag, elder_cover, elder_price, elder_address, elder_date, elder_bed, elder_area, elder_phone, elder_jw, elder_wd, elder_state
+    </sql>
+
+</mapper>

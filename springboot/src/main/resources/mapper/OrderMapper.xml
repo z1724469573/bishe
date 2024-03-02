@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.springboot.entity.OrderEntity">
+        <id column="order_id" property="orderId"/>
+        <result column="order_acc" property="orderAcc"/>
+        <result column="order_date" property="orderDate"/>
+        <result column="order_check" property="orderCheck"/>
+        <result column="order_advice" property="orderAdvice"/>
+        <result column="order_state" property="orderState"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        order_id
+        , order_acc, order_date, order_check, order_advice, order_state
+    </sql>
+
+</mapper>
