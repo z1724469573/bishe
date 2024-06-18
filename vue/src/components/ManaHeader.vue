@@ -10,7 +10,7 @@
           <el-dropdown-menu>
             <el-dropdown-item>修改信息</el-dropdown-item>
             <el-dropdown-item>修改密码</el-dropdown-item>
-            <el-dropdown-item>安全退出</el-dropdown-item>
+            <el-dropdown-item @click="loginOut">安全退出</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -25,11 +25,16 @@
 <script setup lang="ts">
 import {Star,} from '@element-plus/icons-vue'
 import {index} from "@/stores";
+import router from "@/router";
 
 const collapseMenu = () => {
   index().collapseMenu();
 };
 
+function loginOut() {
+  localStorage.clear();
+  router.push("/");
+}
 </script>
 
 <style scoped>

@@ -20,7 +20,7 @@
           <el-dropdown-menu>
             <el-dropdown-item>修改信息</el-dropdown-item>
             <el-dropdown-item>修改密码</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="loginOut">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import {ref, onMounted} from 'vue'
-import {routes} from '@/router'
+import router, {routes} from '@/router'
 
 onMounted(() => {
   activeIndex.value = location.href.split(location.href.slice(0, 21))[1]
@@ -41,7 +41,10 @@ const handleSelect = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath)
 }
 
-
+function loginOut() {
+  localStorage.clear();
+  router.push("/")
+}
 </script>
 
 <style scoped>
