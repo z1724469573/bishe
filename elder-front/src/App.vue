@@ -97,7 +97,7 @@ import {RouterView} from 'vue-router';
 body, html {
   width: calc(100vw - 2px);
   height: calc(100vh - 2px);
-  border: 2px solid #0753a2;
+  border: 2px solid #333;
   overflow: hidden;
 }
 
