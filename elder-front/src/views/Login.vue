@@ -77,9 +77,13 @@
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
+import {ElMessage} from "element-plus";
 
+onMounted(() => {
+  localStorage.setItem("activeIndex", "/home");
+})
 const url = ref("https://cdn-hw-static2.shanhutech.cn/bizhi/staticwp/202306/372e4fe6e22117b4647911751abfc42b--179789999.jpg")
 
 const ruleFormRef = ref<FormInstance>()
@@ -119,9 +123,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      ElMessage({message: 'submit', type: 'success', grouping: true, showClose: true})
+      console.log('submit!');
     } else {
-      console.log('error submit!')
+      console.log('error submit!');
     }
   })
 }

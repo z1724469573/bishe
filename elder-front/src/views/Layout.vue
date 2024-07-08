@@ -7,28 +7,16 @@
           <el-col :span="14">
             <el-menu
                 :default-active="activeIndex"
-                class="el-menu-demo"
                 mode="horizontal"
                 background-color="#fff"
-                text-color="#333"
+                text-color="#666"
                 active-text-color="#111"
                 @select="handleSelect"
+                router
             >
-              <el-menu-item index="1">Processing Center</el-menu-item>
-              <el-sub-menu index="2">
-                <template #title>Workspace</template>
-                <el-menu-item index="2-1">item one</el-menu-item>
-                <el-menu-item index="2-2">item two</el-menu-item>
-                <el-menu-item index="2-3">item three</el-menu-item>
-                <el-sub-menu index="2-4">
-                  <template #title>item four</template>
-                  <el-menu-item index="2-4-1">item one</el-menu-item>
-                  <el-menu-item index="2-4-2">item two</el-menu-item>
-                  <el-menu-item index="2-4-3">item three</el-menu-item>
-                </el-sub-menu>
-              </el-sub-menu>
-              <el-menu-item index="3" disabled>Info</el-menu-item>
-              <el-menu-item index="4">Orders</el-menu-item>
+              <el-menu-item v-for="(item,index) in routes[1].children" :index="item.path" style="font-size: 16px;">
+                <b>{{ item.name }}</b>
+              </el-menu-item>
             </el-menu>
           </el-col>
           <el-col :span="3">
@@ -75,24 +63,25 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {ArrowDown} from '@element-plus/icons-vue'
 import {RouterView} from 'vue-router';
+import {routes} from "@/router";
 
-const activeIndex = ref('1')
+onMounted(() => {
+  if (localStorage.getItem("activeIndex")) {
+    activeIndex.value = localStorage.getItem("activeIndex");
+  }
+})
+
+const activeIndex = ref('')
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath)
+  localStorage.setItem("activeIndex", key);
 }
 
 </script>
 
 <style scoped>
-.avatar {
-  width: 40px;
-  height: 40px;
-  margin-right: 5px;
-}
-
 .el-menu {
   border-bottom: none;
 }
