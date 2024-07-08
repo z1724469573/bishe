@@ -6,7 +6,7 @@
           <el-col :span="6"></el-col>
           <el-col :span="14">
             <el-menu
-                :default-active="activeIndex2"
+                :default-active="activeIndex"
                 class="el-menu-demo"
                 mode="horizontal"
                 background-color="#fff"
@@ -35,7 +35,7 @@
             <el-row align="middle">
               <el-col :span="6">
                 <el-avatar shape="square"
-                    src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
                 />
               </el-col>
               <el-col :span="18">
@@ -61,8 +61,17 @@
           </el-col>
         </el-row>
       </el-header>
-      <el-main>Main</el-main>
-      <el-footer>Footer</el-footer>
+      <el-main>
+        <RouterView/>
+      </el-main>
+      <el-footer>
+        <el-row>
+          <el-col :span="24">
+            社区养老系统 客服电话 010-55779988
+            CopyRight
+          </el-col>
+        </el-row>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -70,8 +79,9 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import {ArrowDown} from '@element-plus/icons-vue'
+import {RouterView} from 'vue-router';
 
-const activeIndex2 = ref('1')
+const activeIndex = ref('1')
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
