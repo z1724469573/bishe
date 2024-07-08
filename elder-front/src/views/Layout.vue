@@ -67,8 +67,8 @@
       <el-footer>
         <el-row>
           <el-col :span="24">
-            社区养老系统 客服电话 010-55779988
-            CopyRight
+            <p>社区养老系统 客服电话 010-55669988</p>
+            <p>CopyRight© 2001-2023 何福海版权所有</p>
           </el-col>
         </el-row>
       </el-footer>
