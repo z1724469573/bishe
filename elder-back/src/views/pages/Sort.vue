@@ -1,220 +1,261 @@
 <template>
   <el-card>
-    <el-form
-        ref="searchRef"
-        :model="searchForm"
-        label-width="0"
-        :inline="true"
-        style="height: 30px;"
-    >
-      <el-form-item
-          prop="keyword"
-          :rules="[
-        { required: true, message: '关键词不能为空' },
-      ]"
-      >
+    <el-form ref="searchRef" :model="searchForm" :inline="true" style="height: 30px;">
+      <el-form-item prop="keyword" :rules="[{required: true, message: '关键词不能为空' }]">
         <el-input
             placeholder="请输入关键词进行查询"
-            v-model.number="searchForm.keyword"
+            v-model="searchForm.keyword"
             type="text"
             autocomplete="off"
         />
       </el-form-item>
       <el-form-item>
-        <el-button plain type="primary" @click="submitSearch(searchRef)">查询</el-button>
-        <el-button plain type="info" @click="resetSearch(searchRef)">重置</el-button>
+        <el-button plain type="primary" @click="searchSubmit(searchRef)">查询</el-button>
+        <el-button plain type="info" @click="searchReset(searchRef)">重置</el-button>
       </el-form-item>
     </el-form>
   </el-card>
   <el-card style="margin-top: 10px;">
-    <el-space :size="10">
-      <el-button plain type="primary" @click="dialogVisible = true">新增</el-button>
-      <el-dialog
-          v-model="dialogVisible"
-          :close-on-click-modal="false"
-          title="新增"
-          width="500"
-      >
-        <el-form
-            ref="ruleFormRef"
-            :model="ruleForm"
-            status-icon
-            :rules="rules"
-            label-width="auto"
-            class="demo-ruleForm"
-        >
-          <el-form-item label="Password" prop="pass">
-            <el-input v-model="ruleForm.pass" type="password" autocomplete="off"/>
-          </el-form-item>
-          <el-form-item label="Confirm" prop="checkPass">
-            <el-input
-                v-model="ruleForm.checkPass"
-                type="password"
-                autocomplete="off"
-            />
-          </el-form-item>
-          <el-form-item label="Age" prop="age">
-            <el-input v-model.number="ruleForm.age"/>
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <div class="dialog-footer">
-            <el-button plain @click="dialogVisible = false">关闭</el-button>
-            <el-button plain type="info" @click="resetForm(ruleFormRef)">重置</el-button>
-            <el-button plain type="primary" @click="submitForm(ruleFormRef)">
-              提交
-            </el-button>
-          </div>
-        </template>
-      </el-dialog>
-      <el-button plain type="danger">批量删除</el-button>
+    <el-space :size="12">
+      <el-button plain type="primary" @click="appendDialog = true">新增</el-button>
+      <el-button disabled plain type="danger">批量删除</el-button>
     </el-space>
   </el-card>
   <el-card style="margin-top: 10px;">
     <el-table
-        border
         :header-cell-style="{'background-color': '#f6f6f6'}"
-        :data="tableData"
-        :default-sort="{ prop: 'date', order: 'descending' }"
+        :data="tableData" border
+        :default-sort="{ prop: 'id', order: 'ascending' }"
+        @selection-change="handleSelect"
         style="width: 100%"
     >
-      <el-table-column prop="date" label="Date" sortable width="180"/>
-      <el-table-column prop="name" label="Name" width="180"/>
-      <el-table-column prop="address" label="Address" :formatter="formatter"/>
+      <el-table-column align="center" type="selection"/>
+      <el-table-column align="center" prop="id" label="编号" :formatter="formatter" sortable/>
+      <el-table-column align="center" prop="name" label="名称"/>
+      <el-table-column align="center" prop="status" label="状态">
+        <template #default="scope">
+          <el-tag :type="scope.row.status===1?'primary':'danger'">正常</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作">
+        <template #default="scope">
+          <el-button plain size="small" @click="handleEdit(scope.$index, scope.row)">
+            编辑
+          </el-button>
+          <el-button plain size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">
+            删除
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
-    <el-row justify="end">
-      <el-pagination style="margin-top: 20px;" background layout="prev, pager, next" :total="1000"/>
+    <el-row justify="end" style="margin-top: 20px;">
+      <el-pagination background layout="total ,prev, pager, next" :total="tableData.length"/>
     </el-row>
   </el-card>
 
+  <el-dialog v-model="appendDialog" :close-on-click-modal="false" title="新增" width="500">
+    <el-form
+        ref="appendRef"
+        :model="appendForm"
+        label-width="60px"
+        style="padding-right: 60px;"
+    >
+      <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
+        <el-input placeholder="请输入名称" v-model="appendForm.name" autocomplete="off"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer" style="padding-right: 40px;">
+        <el-button @click="appendReset(appendRef)">关闭</el-button>
+        <el-button type="primary" @click="appendSubmit(appendRef)">
+          提交
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog v-model="editorDialog" title="编辑" :close-on-click-modal="false" width="500">
+    <el-form
+        ref="editorRef"
+        :model="editorForm"
+        label-width="60px"
+        style="padding-right: 60px;"
+    >
+      <el-form-item label="编号" prop="id" :rules="[{ required: true, message: '请输入编号' }]">
+        <el-input v-model="editorForm.id" disabled/>
+      </el-form-item>
+      <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
+        <el-input v-model="editorForm.name" type="text"/>
+      </el-form-item>
+      <el-form-item label="状态" prop="status" :rules="[{ required: true, message: '请选择状态' }]">
+        <el-select v-model="editorForm.status" placeholder="Select">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="editorReset(editorRef)">关闭</el-button>
+        <el-button type="primary" @click="editorSubmit(editorRef)">
+          提交
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
-import {reactive, ref} from 'vue'
-import type {FormInstance, FormRules, TableColumnCtx} from 'element-plus'
+import {getCurrentInstance, onMounted, reactive, ref} from 'vue'
+import type {FormInstance, TableColumnCtx} from 'element-plus'
+import {ElMessage, ElMessageBox} from "element-plus";
+import api from "@/api";
+import {SortEditorParams} from "@/api/sort";
+
+onMounted(() => {
+  getTableData();
+})
+
+function getTableData() {
+  api.sort.sortList().then((res) => {
+    tableData.value = res.data;
+  })
+}
 
 const searchRef = ref<FormInstance>()
 const searchForm = reactive({
   keyword: '',
 })
 
-const submitSearch = (formEl: FormInstance | undefined) => {
+const searchSubmit = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      api.sort.sortSearch(searchForm.keyword).then((res) => {
+        tableData.value = res.data;
+        ElMessage({
+          message: res.message,
+          type: res.success ? 'success' : 'error',
+          grouping: true,
+          showClose: true
+        })
+      })
     } else {
-      console.log('error submit!')
     }
   })
 }
 
-const resetSearch = (formEl: FormInstance | undefined) => {
+const searchReset = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  formEl.resetFields()
+  formEl.resetFields();
+  getTableData();
 }
 
-interface User {
-  date: string
-  name: string
-  address: string
+const formatter = (row: SortEditorParams, column: TableColumnCtx<SortEditorParams>) => {
+  return row.id
 }
 
-const formatter = (row: User, column: TableColumnCtx<User>) => {
-  return row.address
+const tableSelect = ref<SortEditorParams[]>([])
+const handleSelect = (val: SortEditorParams[]) => {
+  tableSelect.value = val
+  console.log(tableSelect.value);
 }
 
-const tableData: User[] = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
-]
+const handleEdit = (index: number, row: SortEditorParams) => {
+  //@ts-ignore
+  editorForm.value = row;
+  editorDialog.value = true;
+}
 
-const dialogVisible = ref(false);
-const ruleFormRef = ref<FormInstance>()
+const editorDialog = ref(false);
 
-const checkAge = (rule: any, value: any, callback: any) => {
-  if (!value) {
-    return callback(new Error('Please input the age'))
-  }
-  setTimeout(() => {
-    if (!Number.isInteger(value)) {
-      callback(new Error('Please input digits'))
-    } else {
-      if (value < 18) {
-        callback(new Error('Age must be greater than 18'))
-      } else {
-        callback()
-      }
+const {appContext} = getCurrentInstance()!
+const handleDelete = (index: number, row: SortEditorParams) => {
+  ElMessageBox.confirm('是否删除这项数据?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+    closeOnClickModal: false,
+  }, appContext).then(() => {
+    if (row.id != null) {
+      api.sort.sortDelete(row.id).then((res) => {
+        ElMessage({
+          message: res.message,
+          type: res.success ? 'success' : 'error',
+          grouping: true,
+          showClose: true
+        });
+        getTableData();
+      })
     }
-  }, 1000)
+  }).catch(() => {
+  });
 }
 
-const validatePass = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password'))
-  }
-  callback();
-}
-const validatePass2 = (rule: any, value: any, callback: any) => {
-  if (value === '') {
-    callback(new Error('Please input the password again'))
-  } else if (value !== ruleForm.pass) {
-    callback(new Error("Two inputs don't match!"))
-  } else {
-    callback()
-  }
-}
-
-const ruleForm = reactive({
-  pass: '',
-  checkPass: '',
-  age: '',
+const tableData = ref([]);
+const appendDialog = ref(false);
+const appendRef = ref<FormInstance>()
+const appendForm = reactive({
+  name: '',
 })
 
-const rules = reactive<FormRules<typeof ruleForm>>({
-  pass: [{validator: validatePass, trigger: 'blur'}],
-  checkPass: [{validator: validatePass2, trigger: 'blur'}],
-  age: [{validator: checkAge, trigger: 'blur'}],
-})
-
-const submitForm = (formEl: FormInstance | undefined) => {
+const appendSubmit = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      api.sort.sortAppend(appendForm).then((res) => {
+        ElMessage({
+          message: res.message,
+          type: res.success ? 'success' : 'error',
+          grouping: true,
+          showClose: true
+        });
+        if (res.success) appendReset(formEl);
+        getTableData();
+      })
     } else {
-      console.log('error submit!')
     }
   })
 }
-
-const resetForm = (formEl: FormInstance | undefined) => {
+const appendReset = (formEl: FormInstance | undefined) => {
+  appendDialog.value = false;
   if (!formEl) return
   formEl.resetFields()
 }
+
+const editorRef = ref<FormInstance>()
+const editorForm = ref({
+  id: '',
+  name: '',
+  status: '',
+})
+const editorSubmit = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      //@ts-ignore
+      api.sort.sortEditor(editorForm.value).then((res) => {
+        ElMessage({
+          message: res.message,
+          type: res.success ? 'success' : 'error',
+          grouping: true,
+          showClose: true
+        });
+        if (res.success) editorReset(formEl);
+      })
+    } else {
+    }
+  })
+}
+const editorReset = (formEl: FormInstance | undefined) => {
+  editorDialog.value = false;
+  getTableData();
+  // if (!formEl) return
+  // formEl.resetFields()
+}
+const options = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
 
 </script>
 
 <style scoped>
-:deep(.el-card__body) {
-  padding: 20px 10px;
-}
+
 </style>
