@@ -1,6 +1,6 @@
 import axios from "axios";
 import {baseURL, timeout, headers} from "@/config";
-import {index} from "@/store";
+import {index} from "@/stores";
 import {computed, reactive} from "vue";
 
 const state = reactive({
