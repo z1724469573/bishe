@@ -1,7 +1,7 @@
 package com.example.elderapi.common.config;
 
-import com.example.springboot.common.annotate.JwtToken;
-import com.example.springboot.common.utils.JWTUtils;
+import com.example.elderapi.common.annotate.JwtToken;
+import com.example.elderapi.common.utils.JWTUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.method.HandlerMethod;

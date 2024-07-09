@@ -1,7 +1,7 @@
 package com.example.elderapi.common.config;
 
-import com.example.springboot.common.resp.Result;
-import com.example.springboot.common.resp.ResultCode;
+import com.example.elderapi.common.resp.Result;
+import com.example.elderapi.common.resp.ResultCode;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;

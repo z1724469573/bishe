@@ -13,7 +13,7 @@ public class GeneratorMySQL {
     /**
      * 数据库连接url
      */
-    public static final String URL = "jdbc:mysql://localhost/db_zhiyue";
+    public static final String URL = "jdbc:mysql://localhost/db_elder";
     /**
      * 数据库 用户名
      */
@@ -38,13 +38,13 @@ public class GeneratorMySQL {
     /**
      * 保存到包下面
      */
-    public static final String PACKAGE = "com.example.springboot.system";
+    public static final String PACKAGE = "com.example.elderapi.system";
     /**
      * 要生成的表
      */
-    public static final String[] TABLES = {"zhiyue_bookno"};
-    public static final String[] TablePrefix = {"zhiyue_"};
-    public static final String[] FieldPrefix = {"bookno_"};
+    public static final String[] TABLES = {"eld_sort_news"};
+    public static final String[] TablePrefix = {"eld_"};
+    public static final String[] FieldPrefix = {"news_"};
 
     /**
      * 代码生成入口

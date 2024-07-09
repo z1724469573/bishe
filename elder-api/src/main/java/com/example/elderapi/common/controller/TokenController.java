@@ -1,9 +1,9 @@
 package com.example.elderapi.common.controller;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.springboot.common.annotate.JwtToken;
-import com.example.springboot.common.resp.Result;
-import com.example.springboot.common.utils.JWTUtils;
+import com.example.elderapi.common.annotate.JwtToken;
+import com.example.elderapi.common.resp.Result;
+import com.example.elderapi.common.utils.JWTUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

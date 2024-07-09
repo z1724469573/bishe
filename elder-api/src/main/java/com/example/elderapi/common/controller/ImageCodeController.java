@@ -1,6 +1,6 @@
 package com.example.elderapi.common.controller;
 
-import com.example.springboot.common.utils.VerifyCodeUtils;
+import com.example.elderapi.common.utils.VerifyCodeUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletOutputStream;
