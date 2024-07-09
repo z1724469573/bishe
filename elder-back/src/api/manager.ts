@@ -1,6 +1,6 @@
 import request from "@/request";
 // 响应接口
-export interface UserListRes {
+export interface ManagerListRes {
     message: string;
     success: boolean;
     code: number;
@@ -11,12 +11,12 @@ export interface UserListRes {
  * 列表
  * @returns
  */
-export function userList(): Promise<UserListRes> {
-    return request.get(`/userEntity/userList`);
+export function managerList(): Promise<ManagerListRes> {
+    return request.get(`/managerEntity/managerList`);
 }
 
 // 参数接口
-export interface UserAppendParams {
+export interface ManagerAppendParams {
     acc?: string;
     pwd?: string;
     name?: string;
@@ -27,7 +27,7 @@ export interface UserAppendParams {
 }
 
 // 响应接口
-export interface UserAppendRes {
+export interface ManagerAppendRes {
     message: string;
     success: boolean;
     code: number;
@@ -36,7 +36,7 @@ export interface UserAppendRes {
 
 /**
  * 新增
- * @param {object} params User
+ * @param {object} params Manager
  * @param {string} params.acc
  * @param {string} params.pwd
  * @param {string} params.name
@@ -46,12 +46,12 @@ export interface UserAppendRes {
  * @param {string} params.address
  * @returns
  */
-export function userAppend(params: UserAppendParams): Promise<UserAppendRes> {
-    return request.post(`/userEntity/userAppend`, params);
+export function managerAppend(params: ManagerAppendParams): Promise<ManagerAppendRes> {
+    return request.post(`/managerEntity/managerAppend`, params);
 }
 
 // 响应接口
-export interface UserDeleteRes {
+export interface ManagerDeleteRes {
     message: string;
     success: boolean;
     code: number;
@@ -63,12 +63,12 @@ export interface UserDeleteRes {
  * @param {string} id
  * @returns
  */
-export function userDelete(id: number): Promise<UserDeleteRes> {
-    return request.post(`/userEntity/userDelete?id=${id}`);
+export function managerDelete(id: number): Promise<ManagerDeleteRes> {
+    return request.post(`/managerEntity/managerDelete?id=${id}`);
 }
 
 // 参数接口
-export interface UserEditorParams {
+export interface ManagerEditorParams {
     id?: number;
     acc?: string;
     pwd?: string;
@@ -81,7 +81,7 @@ export interface UserEditorParams {
 }
 
 // 响应接口
-export interface UserEditorRes {
+export interface ManagerEditorRes {
     message: string;
     success: boolean;
     code: number;
@@ -102,12 +102,12 @@ export interface UserEditorRes {
  * @param {number} params.status 状态(1 正常 0 禁用)
  * @returns
  */
-export function userEditor(params: UserEditorParams): Promise<UserEditorRes> {
-    return request.post(`/userEntity/userEditor`, params);
+export function managerEditor(params: ManagerEditorParams): Promise<ManagerEditorRes> {
+    return request.post(`/managerEntity/managerEditor`, params);
 }
 
 // 响应接口
-export interface UserSearchRes {
+export interface ManagerSearchRes {
     message: string;
     success: boolean;
     code: number;
@@ -119,7 +119,8 @@ export interface UserSearchRes {
  * @param {string} name
  * @returns
  */
-export function userSearch(name: string): Promise<UserSearchRes> {
-    return request.post(`/userEntity/userSearch?name=${name}`);
+export function managerSearch(name: string): Promise<ManagerSearchRes> {
+    return request.post(`/managerEntity/managerSearch?name=${name}`);
 }
+
 

@@ -8,7 +8,7 @@
         <result column="manager_acc" property="acc" />
         <result column="manager_pwd" property="pwd" />
         <result column="manager_name" property="name" />
-        <result column="user_sex" property="userSex" />
+        <result column="manager_sex" property="sex" />
         <result column="manager_age" property="age" />
         <result column="manager_phone" property="phone" />
         <result column="manager_address" property="address" />
@@ -17,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        manager_id, manager_acc, manager_pwd, manager_name, user_sex, manager_age, manager_phone, manager_address, status
+        manager_id, manager_acc, manager_pwd, manager_name, manager_sex, manager_age, manager_phone, manager_address, status
     </sql>
 
 </mapper>

@@ -43,8 +43,8 @@ public class ManagerEntity extends Model<ManagerEntity> {
     private String name;
 
     @Schema(description = "性别")
-    @TableField("user_sex")
-    private String userSex;
+    @TableField("manager_sex")
+    private String sex;
 
     @Schema(description = "年龄")
     @TableField("manager_age")
