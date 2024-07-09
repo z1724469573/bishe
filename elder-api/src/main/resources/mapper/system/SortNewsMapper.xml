@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.elderapi.system.mapper.SortNewsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.elderapi.system.entity.SortNewsEntity">
+        <id column="news_id" property="id" />
+        <result column="news_sort_id" property="sortId" />
+        <result column="news_title" property="title" />
+        <result column="news_content" property="content" />
+        <result column="news_date" property="date" />
+        <result column="news_cover" property="cover" />
+        <result column="news_read" property="read" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        news_id, news_sort_id, news_title, news_content, news_date, news_cover, news_read, status
+    </sql>
+
+</mapper>

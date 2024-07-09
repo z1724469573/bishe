@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.elderapi.system.mapper.ActiveShMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.elderapi.system.entity.ActiveShEntity">
+        <id column="sh_id" property="id" />
+        <result column="sh_active_id" property="activeId" />
+        <result column="sh_user_id" property="userId" />
+        <result column="sh_date" property="date" />
+        <result column="sh_check" property="check" />
+        <result column="sh_advice" property="advice" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sh_id, sh_active_id, sh_user_id, sh_date, sh_check, sh_advice, status
+    </sql>
+
+</mapper>
