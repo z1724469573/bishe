@@ -26,7 +26,7 @@ export interface SortAppendRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -44,7 +44,7 @@ export interface SortDeleteRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -68,7 +68,7 @@ export interface SortEditorRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -88,7 +88,7 @@ export interface SortSearchRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
