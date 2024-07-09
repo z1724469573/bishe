@@ -2,15 +2,24 @@
   <div class="common-layout">
     <el-container>
       <el-header>
-        <el-row justify="space-between" align="middle">
-          <el-col :span="6"></el-col>
+        <el-row justify="space-between" align="middle" style="padding: 0 30px;">
+          <el-col :span="6">
+            <el-row :gutter="0" style="width: 60%;height: 60px;" align="middle" justify="center">
+              <el-col :span="8">
+                <el-image style="width: 100%; height: 40px;" :src="logo" fit="contain"/>
+              </el-col>
+              <el-col :span="16">
+                <b style="font-size: 20px;color: #0753a2;">社区养老系统</b>
+              </el-col>
+            </el-row>
+          </el-col>
           <el-col :span="14">
             <el-menu
                 :default-active="activeIndex"
                 mode="horizontal"
                 background-color="#fff"
-                text-color="#666"
-                active-text-color="#111"
+                text-color="#333"
+                active-text-color="#0753a2"
                 @select="handleSelect"
                 router
             >
@@ -39,8 +48,7 @@
                       <el-dropdown-item>Action 1</el-dropdown-item>
                       <el-dropdown-item>Action 2</el-dropdown-item>
                       <el-dropdown-item>Action 3</el-dropdown-item>
-                      <el-dropdown-item disabled>Action 4</el-dropdown-item>
-                      <el-dropdown-item divided>Action 5</el-dropdown-item>
+                      <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
                     </el-dropdown-menu>
                   </template>
                 </el-dropdown>
@@ -66,7 +74,8 @@
 import {onMounted, ref} from 'vue'
 import {ArrowDown} from '@element-plus/icons-vue'
 import {RouterView} from 'vue-router';
-import {routes} from "@/router";
+import router, {routes} from "@/router";
+import logo from "@/assets/logo.png"
 
 onMounted(() => {
   if (localStorage.getItem("activeIndex")) {
@@ -77,6 +86,10 @@ onMounted(() => {
 const activeIndex = ref('')
 const handleSelect = (key: string, keyPath: string[]) => {
   localStorage.setItem("activeIndex", key);
+}
+
+const loginOut = () => {
+  router.push("/");
 }
 
 </script>

@@ -3,12 +3,12 @@
     <el-row>
       <el-col :span="24">
         <div style="width: 100%;height: 80px;background-color:#fff;">
-          <el-row :gutter="20" style="width: 40%;" align="middle" justify="center">
-            <el-col :span="6">
-              <el-image style="width: 100%; height: 80px" :src="url" fit="contain"/>
+          <el-row :gutter="20" style="width: 40%;height: 80px;" align="middle" justify="center">
+            <el-col :span="4">
+              <el-image style="width: 100%; height: 50px;" :src="logo" fit="contain"/>
             </el-col>
             <el-col :span="10">
-              <b style="font-size: 20px;">社区养老系统</b>
+              <b style="font-size: 24px;color: #0753a2;">社区养老系统</b>
             </el-col>
           </el-row>
         </div>
@@ -18,29 +18,33 @@
       <el-col :span="12">
         <el-row align="middle" justify="center" style="width: 100%;height: calc(100vh - 80px);">
           <el-col :span="20">
-            <el-image style="width: 100%; height: 500px" :src="url" fit="contain"/>
+            <el-image style="width: 100%; height: 500px" :src="login" fit="contain"/>
           </el-col>
         </el-row>
       </el-col>
       <el-col :span="12">
         <el-row align="middle" justify="center" style="width: 100%;height: calc(100vh - 80px);">
           <el-col :span="14">
-            <el-card style="padding-right: 60px">
+            <el-card>
               <template #header>
                 <div class="card-header">
-                  <b style="font-size: 26px;">用户登录</b>
+                  <div style="width: 100%;text-align: center;">
+                    <b style="font-size: 26px;color: #0753a2;">用户登录</b>
+                  </div>
                 </div>
               </template>
               <template #footer>
                 <el-row justify="end" align="middle">
-                  <el-col :span="11">
+                  <el-col :span="10">
                     <div style="font-size: 14px;">
-                      还没有账号？前往注册
+                      还没有账号？前往
+                      <em style="font-style: normal;color: #0753a2;cursor: pointer;">注册</em>
                     </div>
                   </el-col>
                 </el-row>
               </template>
               <el-form
+                  style="padding-right: 60px"
                   ref="ruleFormRef"
                   :model="ruleForm"
                   status-icon
@@ -80,11 +84,13 @@
 import {onMounted, reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 import {ElMessage} from "element-plus";
+import logo from "@/assets/logo.png"
+import login from "@/assets/login.4b369e29.png"
+import router from "@/router";
 
 onMounted(() => {
   localStorage.setItem("activeIndex", "/home");
 })
-const url = ref("https://cdn-hw-static2.shanhutech.cn/bizhi/staticwp/202306/372e4fe6e22117b4647911751abfc42b--179789999.jpg")
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -121,10 +127,12 @@ const rules = reactive<FormRules<typeof ruleForm>>({
 
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
+  //@ts-ignore
   formEl.validate((valid) => {
     if (valid) {
       ElMessage({message: 'submit', type: 'success', grouping: true, showClose: true})
       console.log('submit!');
+      router.push("/home");
     } else {
       console.log('error submit!');
     }
