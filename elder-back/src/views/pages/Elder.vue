@@ -91,10 +91,10 @@
       <el-form-item label="封面" prop="cover" :rules="[{ required: true, message: '请输入封面' }]">
         <el-upload
             ref="upload"
-            action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
             :limit="1"
-            :on-exceed="handleExceed"
+            :on-change="handleUpload"
             :auto-upload="false"
+            list-type="picture"
         >
           <template #trigger>
             <el-button type="primary">上传封面</el-button>
@@ -392,11 +392,12 @@ const statusList = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
 const sexList = [{label: '男', value: '男'}, {label: '女', value: '女'}];
 
 const upload = ref<UploadInstance>();
-const handleExceed: UploadProps['onExceed'] = (files) => {
-  upload.value!.clearFiles()
-  const file = files[0] as UploadRawFile
-  file.uid = genFileId()
-  upload.value!.handleStart(file);
+const handleUpload = (files) => {
+  console.log(files);
+  api.common.upload(files).then((res) => {
+    console.log(res);
+  })
+
 }
 
 const submitUpload = () => {
@@ -431,14 +432,20 @@ const submitUpload = () => {
 :deep(.v-md-editor__toolbar-left) {
 }
 
-:deep(.v-md-editor__toolbar-item-preview){
+:deep(.v-md-editor__toolbar-item-preview) {
   transform: translateX(4px);
 }
 
-:deep(.v-md-editor__toolbar-item-toc){
+:deep(.v-md-editor__toolbar-item-toc) {
   transform: translateX(4px);
 }
 
+:deep(.el-upload-list--picture) {
+  width: 488px;
+}
 
-
+:deep(.el-upload-list__item > img) {
+  width: 70px;
+  height: 70px;
+}
 </style>

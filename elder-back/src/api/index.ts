@@ -1,4 +1,5 @@
 import * as active from "@/api/active"
+import * as common from "@/api/common"
 import * as elder from "@/api/elder"
 import * as manager from "@/api/manager"
 import * as notice from "@/api/notice"
@@ -8,6 +9,7 @@ import * as user from "@/api/user"
 
 const api = {
     active,
+    common,
     elder,
     manager,
     notice,
