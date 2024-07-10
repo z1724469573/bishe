@@ -4,7 +4,7 @@ export interface UserListRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -31,7 +31,7 @@ export interface UserAppendRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -55,7 +55,7 @@ export interface UserDeleteRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -85,7 +85,7 @@ export interface UserEditorRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -111,7 +111,7 @@ export interface UserSearchRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
