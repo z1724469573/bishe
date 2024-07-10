@@ -5,7 +5,7 @@ export interface ElderListRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -37,7 +37,7 @@ export interface ElderAppendRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -66,7 +66,7 @@ export interface ElderDeleteRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -102,7 +102,7 @@ export interface ElderEditorRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -133,7 +133,7 @@ export interface ElderSearchRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
