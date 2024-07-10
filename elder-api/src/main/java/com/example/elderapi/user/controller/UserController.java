@@ -8,7 +8,10 @@ import com.example.elderapi.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 /**
  * <p>
@@ -50,14 +53,18 @@ public class UserController {
 
     @Operation(summary = "新增")
     @PostMapping("/userAppend")
-    public Result<?> userAppend(@RequestBody UserController.User user) {
+    public Result<?> userAppend(@RequestBody User user) {
         QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name", user.getName());
         if (service.getOne(wrapper) != null) {
             return Result.failure("名称已存在");
         }
+        wrapper.eq("user_acc", user.getAcc());
+        if (service.getOne(wrapper) != null) {
+            return Result.failure("账号已存在");
+        }
         UserEntity entity = new UserEntity();
-        entity.setName(user.getName());
+        BeanUtils.copyProperties(user, entity);
         return Result.success(service.save(entity));
     }
 
@@ -70,6 +77,16 @@ public class UserController {
     @Operation(summary = "编辑")
     @PostMapping("/userEditor")
     public Result<?> userEditor(@RequestBody UserEntity userEntity) {
+        QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", userEntity.getId());
+        //修改过名称
+        if (!Objects.equals(service.getOne(wrapper).getName(), userEntity.getName())) {
+            QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("user_name", userEntity.getName());
+            if (service.count(queryWrapper) != 0) {
+                return Result.failure("名称已存在");
+            }
+        }
         return Result.success(service.updateById(userEntity));
     }
 

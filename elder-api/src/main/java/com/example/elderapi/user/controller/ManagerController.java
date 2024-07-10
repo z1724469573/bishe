@@ -3,12 +3,16 @@ package com.example.elderapi.manager.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.user.entity.ManagerEntity;
+import com.example.elderapi.user.entity.UserEntity;
 import com.example.elderapi.user.mapper.ManagerMapper;
 import com.example.elderapi.user.service.ManagerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 /**
  * <p>
@@ -56,8 +60,12 @@ public class ManagerController {
         if (service.getOne(wrapper) != null) {
             return Result.failure("名称已存在");
         }
+        wrapper.eq("manager_acc", manager.getAcc());
+        if (service.getOne(wrapper) != null) {
+            return Result.failure("账号已存在");
+        }
         ManagerEntity entity = new ManagerEntity();
-        entity.setName(manager.getName());
+        BeanUtils.copyProperties(manager, entity);
         return Result.success(service.save(entity));
     }
 
@@ -70,6 +78,16 @@ public class ManagerController {
     @Operation(summary = "编辑")
     @PostMapping("/managerEditor")
     public Result<?> managerEditor(@RequestBody ManagerEntity managerEntity) {
+        QueryWrapper<ManagerEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("manager_id", managerEntity.getId());
+        //修改过名称
+        if (!Objects.equals(service.getOne(wrapper).getName(), managerEntity.getName())) {
+            QueryWrapper<ManagerEntity> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("manager_name", managerEntity.getName());
+            if (service.count(queryWrapper) != 0) {
+                return Result.failure("名称已存在");
+            }
+        }
         return Result.success(service.updateById(managerEntity));
     }
 
