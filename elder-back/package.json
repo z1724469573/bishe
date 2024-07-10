@@ -12,14 +12,16 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@kangc/v-md-editor": "^2.3.18",
     "axios": "^1.5.1",
     "echarts": "^5.4.3",
     "element-plus": "^2.7.3",
     "pinia": "^2.1.7",
+    "screenfull": "5.0.2",
     "vue": "^3.4.21",
     "vue-echarts": "^6.6.1",
-    "screenfull": "5.0.2",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue-ueditor-wrap": "^3.0.8"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
