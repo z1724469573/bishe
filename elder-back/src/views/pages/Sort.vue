@@ -18,7 +18,7 @@
   <el-card style="margin-top: 10px;">
     <el-space :size="12">
       <el-button plain type="primary" @click="appendDialog = true">新增</el-button>
-      <el-button disabled plain type="danger">批量删除</el-button>
+      <el-button :disabled="tableSelect.length===0" plain type="danger" @click="multipleDelete">批量删除</el-button>
     </el-space>
   </el-card>
   <el-card style="margin-top: 10px;">
@@ -53,12 +53,12 @@
     </el-row>
   </el-card>
 
-  <el-dialog v-model="appendDialog" :close-on-click-modal="false" title="新增" width="500">
+  <el-dialog v-model="appendDialog" :close-on-click-modal="false" title="新增" width="600">
     <el-form
         ref="appendRef"
         :model="appendForm"
         label-width="60px"
-        style="padding-right: 60px;"
+        style="padding: 20px 80px 20px 20px;"
     >
       <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
         <el-input placeholder="请输入名称" v-model="appendForm.name" autocomplete="off"/>
@@ -74,12 +74,12 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="editorDialog" title="编辑" :close-on-click-modal="false" width="500">
+  <el-dialog v-model="editorDialog" title="编辑" :close-on-click-modal="false" width="600">
     <el-form
         ref="editorRef"
         :model="editorForm"
         label-width="60px"
-        style="padding-right: 60px;"
+        style="padding: 20px 80px 20px 20px;"
     >
       <el-form-item label="编号" prop="id" :rules="[{ required: true, message: '请输入编号' }]">
         <el-input v-model="editorForm.id" disabled/>
@@ -89,7 +89,7 @@
       </el-form-item>
       <el-form-item label="状态" prop="status" :rules="[{ required: true, message: '请选择状态' }]">
         <el-select v-model="editorForm.status" placeholder="Select">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"/>
+          <el-option v-for="item in statusList" :key="item.value" :label="item.label" :value="item.value"/>
         </el-select>
       </el-form-item>
     </el-form>
@@ -156,8 +156,33 @@ const formatter = (row: SortEditorParams, column: TableColumnCtx<SortEditorParam
 
 const tableSelect = ref<SortEditorParams[]>([])
 const handleSelect = (val: SortEditorParams[]) => {
-  tableSelect.value = val
-  console.log(tableSelect.value);
+  tableSelect.value = val;
+}
+
+const multipleDelete = () => {
+  ElMessageBox.confirm('是否批量删除选中数据?', '警告', {
+    confirmButtonText: '确认',
+    cancelButtonText: '取消',
+    type: 'warning',
+    closeOnClickModal: false,
+  }, appContext).then(() => {
+    //删除逻辑
+    for (let i = 0; i < tableSelect.value.length; i++) {
+      let element = tableSelect.value[i];
+      if (element.id != null) {
+        api.sort.sortDelete(element.id).then((res) => {
+          ElMessage({
+            message: res.message,
+            type: res.success ? 'success' : 'error',
+            grouping: true,
+            showClose: true
+          });
+          getTableData();
+        })
+      }
+    }
+  }).catch(() => {
+  });
 }
 
 const handleEdit = (index: number, row: SortEditorParams) => {
@@ -252,7 +277,7 @@ const editorReset = (formEl: FormInstance | undefined) => {
   // if (!formEl) return
   // formEl.resetFields()
 }
-const options = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
+const statusList = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
 
 </script>
 
