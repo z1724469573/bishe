@@ -5,7 +5,7 @@ export interface ActiveListRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -32,7 +32,7 @@ export interface ActiveAppendRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -56,7 +56,7 @@ export interface ActiveDeleteRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -86,7 +86,7 @@ export interface ActiveEditorRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -112,7 +112,7 @@ export interface ActiveSearchRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
