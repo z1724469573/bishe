@@ -19,7 +19,7 @@
       </el-row>
       <el-row :gutter="20" style="margin-top: 20px;">
         <el-col :span="16">
-          <el-card>
+          <el-card shadow="never">
             <template #header>
               <div class="card-header">
                 <span><b>资讯分类</b></span>
@@ -31,12 +31,12 @@
           </el-card>
         </el-col>
         <el-col :span="8">
-          <el-card>
+          <el-card shadow="never">
             <template #header>
               <div class="card-header">
                 <el-row align="middle" justify="space-between">
                   <span><b>公益活动</b></span>
-                  <el-button text size="small">更多</el-button>
+                  <el-button text size="small" @click="handleSelect">更多</el-button>
                 </el-row>
               </div>
             </template>
@@ -47,12 +47,12 @@
     </el-col>
     <el-col :span="8"></el-col>
   </el-row>
-
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
+import router from "@/router";
 import one from "@/assets/swiper/1.78018329.jpeg"
 import two from "@/assets/swiper/2.952132ef.jpeg"
 
@@ -66,6 +66,11 @@ const handleName = (tab: TabsPaneContext, event: Event) => {
 
 const handleSort = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)
+}
+
+const handleSelect = () => {
+  localStorage.setItem("activeIndex", '/active');
+  router.push('/active');
 }
 </script>
 

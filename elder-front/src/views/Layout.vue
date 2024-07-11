@@ -17,9 +17,6 @@
             <el-menu
                 :default-active="activeIndex"
                 mode="horizontal"
-                background-color="#fff"
-                text-color="#333"
-                active-text-color="#0753a2"
                 @select="handleSelect"
                 router
             >

@@ -4,8 +4,9 @@
       <el-card style="width: calc(25% - 10px);float: left;margin: 5px;" v-for="item in elderList">
         <img style="height: 180px;cursor: pointer;" :src="item.cover" alt=" " @click="handleElder(item)">
         <p style="font-size: 16px;padding: 10px 20px;height: 20px;">{{ item.name }}</p>
-        <el-row align="middle" style="padding: 20px;">
-          <p style="font-size: 14px;height: 30px;color: red;">{{ item.price }}</p>
+        <el-row align="middle" justify="space-between" style="padding: 20px;">
+          <p style="font-size: 18px;color: red;">{{ item.price }}</p>
+          <el-button text size="small" @click="handleElder(item)">更多</el-button>
         </el-row>
       </el-card>
     </el-col>
