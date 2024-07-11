@@ -20,8 +20,7 @@
     "screenfull": "5.0.2",
     "vue": "^3.4.21",
     "vue-echarts": "^6.6.1",
-    "vue-router": "^4.3.0",
-    "vue-ueditor-wrap": "^3.0.8"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
