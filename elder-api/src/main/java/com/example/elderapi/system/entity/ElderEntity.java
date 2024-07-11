@@ -44,7 +44,7 @@ public class ElderEntity extends Model<ElderEntity> {
 
     @Schema(description = "价格")
     @TableField("elder_price")
-    private Integer price;
+    private String price;
 
     @Schema(description = "地址")
     @TableField("elder_address")
@@ -64,7 +64,7 @@ public class ElderEntity extends Model<ElderEntity> {
 
     @Schema(description = "面积")
     @TableField("elder_area")
-    private Integer area;
+    private String area;
 
     @Schema(description = "电话")
     @TableField("elder_phone")
