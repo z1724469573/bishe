@@ -5,7 +5,7 @@ export interface ServeListRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface ServeAppendRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -48,7 +48,7 @@ export interface ServeDeleteRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface ServeEditorRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
@@ -96,7 +96,7 @@ export interface ServeSearchRes {
     message: string;
     success: boolean;
     code: number;
-    data: Record<string, unknown>;
+    data: any;
 }
 
 /**
