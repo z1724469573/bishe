@@ -32,6 +32,11 @@ export const routes = [
                 component: () => import('../views/pages/Elder.vue')
             },
             {
+                path: '/elderDetail',
+                name: '养老院详情',
+                component: () => import('../views/pages/ElderDetail.vue')
+            },
+            {
                 path: '/myself',
                 name: '个人中心',
                 component: () => import('../views/pages/Myself.vue')
