@@ -21,7 +21,13 @@ export const routes = [
                 path: '/active',
                 name: '公益活动',
                 component: () => import('../views/pages/Active.vue')
-            }, {
+            },
+            {
+                path: '/activeDetail',
+                name: '活动详情',
+                component: () => import('../views/pages/ActiveDetail.vue')
+            },
+            {
                 path: '/serve',
                 name: '养老服务',
                 component: () => import('../views/pages/Serve.vue')
