@@ -105,6 +105,10 @@ const loginOut = () => {
   padding: 0;
 }
 
+.el-main{
+  min-height: 80vh;
+}
+
 :deep(.el-tooltip__trigger:focus-visible) {
   outline: unset;
 }

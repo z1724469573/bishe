@@ -1,24 +1,34 @@
 <template>
-  <el-row>
-    <el-col :span="3"></el-col>
+  <el-row justify="center">
     <el-col :span="18">
-      <el-card style="width: calc(25% - 10px);float: left;margin: 5px;" v-for="item in 6">
-        <img
-            src="https://cdn-hw-static2.shanhutech.cn/bizhi/staticwp/202306/372e4fe6e22117b4647911751abfc42b--179789999.jpg"
-            alt=" ">
-        <p style="font-size: 14px;padding: 20px;">爱心共建聚合力 关爱老人做公益</p>
+      <el-card style="width: calc(25% - 10px);float: left;margin: 5px;" v-for="item in activeList">
+        <img style="height: 180px;" :src="item.cover" alt=" ">
+        <p style="font-size: 14px;padding: 10px 20px;height: 60px;">{{ item.name }}</p>
         <el-row align="middle" justify="space-between" style="padding: 20px;">
-          <p style="font-size: 12px;">2024-08-09 12:23:23</p>
+          <p style="font-size: 12px;">{{ item.start }} ~ {{ item.end }}</p>
           <el-button text size="small">更多</el-button>
         </el-row>
       </el-card>
     </el-col>
-    <el-col :span="3"></el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
+import {onMounted, ref} from "vue";
+import api from "@/api";
 
+onMounted(() => {
+  getActiveList();
+})
+
+const getActiveList = () => {
+  api.active.activeList().then((res) => {
+    activeList.value = res.data;
+    console.log(res.data);
+  })
+}
+
+const activeList = ref([]);
 </script>
 
 <style scoped>
