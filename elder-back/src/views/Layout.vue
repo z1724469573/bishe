@@ -65,7 +65,8 @@
             </el-col>
             <el-col :span="7">
               <el-breadcrumb :separator-icon="ArrowRight">
-                <el-breadcrumb-item :to="{ path: '/home' }" @click="handleMenu({name:'首页',path:'/home'})">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/home' }" @click="handleMenu({name:'首页',path:'/home'})">首页
+                </el-breadcrumb-item>
                 <el-breadcrumb-item v-if="currentMenu.name!=='首页'">{{ currentMenu.name }}</el-breadcrumb-item>
               </el-breadcrumb>
             </el-col>
@@ -178,6 +179,12 @@ const system = [{
 .el-header {
   border-bottom: 1px solid #ccc;
   box-shadow: #ccc 2px 2px 2px 2px;
+}
+
+.el-main {
+  height: calc(100vh - 65px);
+  margin-top: 5px;
+  overflow: scroll;
 }
 
 :deep(.el-tooltip__trigger:focus-visible) {
