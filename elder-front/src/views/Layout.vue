@@ -23,7 +23,7 @@
                 @select="handleSelect"
                 router
             >
-              <el-menu-item v-for="(item,index) in routes[1].children" :index="item.path" style="font-size: 16px;">
+              <el-menu-item v-for="(item,index) in routes" :index="item.path" style="font-size: 16px;">
                 <b>{{ item.name }}</b>
               </el-menu-item>
             </el-menu>
@@ -60,11 +60,13 @@
       <el-main>
         <RouterView/>
       </el-main>
-      <el-footer>
-        <div style="display: flex;align-items: center;justify-content: center;flex-direction: column;font-size: 14px;">
+      <el-footer style="color: #666;font-size: 14px;">
+        <el-row justify="center">
           <p style="margin: 10px 0;">社区养老系统 客服电话 010-55669988</p>
+        </el-row>
+        <el-row justify="center" style="padding-bottom: 30px;">
           <p>CopyRight© 2001-2023 Bestwishes0203版权所有</p>
-        </div>
+        </el-row>
       </el-footer>
     </el-container>
   </div>
@@ -74,7 +76,7 @@
 import {onMounted, ref} from 'vue'
 import {ArrowDown} from '@element-plus/icons-vue'
 import {RouterView} from 'vue-router';
-import router, {routes} from "@/router";
+import router from "@/router";
 import logo from "@/assets/logo.png"
 
 onMounted(() => {
@@ -92,6 +94,32 @@ const loginOut = () => {
   router.push("/");
 }
 
+const routes = [
+  {
+    path: '/home',
+    name: '首页',
+  },
+  {
+    path: '/active',
+    name: '公益活动',
+  }, {
+    path: '/serve',
+    name: '养老服务',
+  },
+  {
+    path: '/elder',
+    name: '养老院',
+  },
+  {
+    path: '/myself',
+    name: '个人中心',
+  },
+  {
+    path: '/about',
+    name: '关于我们',
+  }
+]
+
 </script>
 
 <style scoped>
@@ -105,7 +133,7 @@ const loginOut = () => {
   padding: 0;
 }
 
-.el-main{
+.el-main {
   min-height: 80vh;
 }
 
