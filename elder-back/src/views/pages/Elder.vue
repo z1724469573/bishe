@@ -21,30 +21,47 @@
       <el-button :disabled="tableSelect.length===0" plain type="danger" @click="multipleDelete">批量删除</el-button>
     </el-space>
   </el-card>
+
   <el-card style="margin-top: 10px;">
     <el-table
         :header-cell-style="{'background-color': '#f6f6f6'}"
         :data="tableData" border
         :default-sort="{ prop: 'id', order: 'ascending' }"
         @selection-change="handleSelect"
-        style="width: 100%"
+        style="width: 100%;font-size: 12px;"
     >
       <el-table-column align="center" type="selection"/>
       <el-table-column align="center" prop="id" label="编号" :formatter="formatter" sortable/>
-      <el-table-column align="center" prop="acc" label="账号"/>
-      <el-table-column align="center" prop="pwd" label="密码">
+      <el-table-column align="center" prop="name" label="名称" width="140"/>
+      <el-table-column align="center" prop="content" label="查看详情" width="90">
         <template #default="scope">
-          <el-popover placement="top" trigger="hover" :content="scope.row.pwd">
-            <template #reference>
-              <el-button size="small">查看</el-button>
-            </template>
-          </el-popover>
+          <el-button size="small" plain @click="handleDetail(scope.row.content)">
+            查看
+          </el-button>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="name" label="名称"/>
-      <el-table-column align="center" prop="sex" label="性别"/>
-      <el-table-column align="center" prop="age" label="年龄"/>
-      <el-table-column align="center" prop="phone" label="电话"/>
+      <el-table-column align="center" prop="tag" label="标签"/>
+      <el-table-column align="center" prop="price" label="价格" width="120"/>
+      <el-table-column align="center" prop="date" label="创建时间" width="120"/>
+      <el-table-column align="center" prop="cover" label="封面">
+        <template #default="scope">
+          <el-image
+              style="width: 40px; height: 40px;"
+              :src="scope.row.cover"
+              preview-teleported
+              :max-scale="7"
+              :min-scale="0.2"
+              :zoom-rate="1.1"
+              :preview-src-list="[scope.row.cover]"
+              fit="cover"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column align="center" prop="bed" label="房间数量" width="120"/>
+      <el-table-column align="center" prop="area" label="面积" width="90"/>
+      <el-table-column align="center" prop="phone" label="联系电话" width="120"/>
+      <el-table-column align="center" prop="jd" label="经度"/>
+      <el-table-column align="center" prop="wd" label="维度"/>
       <el-table-column align="center" prop="address" label="地址">
         <template #default="scope">
           <el-popover placement="top" trigger="hover" :content="scope.row.address">
@@ -59,7 +76,7 @@
           <el-tag :type="scope.row.status===1?'primary':'danger'">正常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="180">
+      <el-table-column fixed="right" align="center" label="操作" width="180">
         <template #default="scope">
           <el-button plain size="small" @click="handleEdit(scope.$index, scope.row)">
             编辑
@@ -80,7 +97,7 @@
         ref="appendRef"
         :model="appendForm"
         label-width="100px"
-        style="padding: 20px 60px 20px 20px;"
+        style="padding: 20px 80px 20px 20px;"
     >
       <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
         <el-input placeholder="请输入名称" v-model="appendForm.name" autocomplete="off"/>
@@ -90,9 +107,10 @@
       </el-form-item>
       <el-form-item label="封面" prop="cover" :rules="[{ required: true, message: '请输入封面' }]">
         <el-upload
-            ref="upload"
+            ref="appendUploadRef"
             :limit="1"
-            :on-change="handleUpload"
+            :on-change="appendUpload"
+            :on-exceed="appendExceed"
             :auto-upload="false"
             list-type="picture"
         >
@@ -110,7 +128,7 @@
       <el-form-item label="创建时间" prop="date" :rules="[{ required: true, message: '请选择创建时间' }]">
         <el-date-picker
             v-model="appendForm.date"
-            type="date"
+            type="date" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
             placeholder="请选择创建时间"
         />
       </el-form-item>
@@ -118,7 +136,7 @@
         <el-input placeholder="请输入房间数量" v-model.number="appendForm.bed" autocomplete="off"/>
       </el-form-item>
       <el-form-item label="面积" prop="area" :rules="[{ required: true, message: '请输入面积' }]">
-        <el-input placeholder="请输入面积" v-model.number="appendForm.area" autocomplete="off"/>
+        <el-input placeholder="请输入面积" v-model="appendForm.area" autocomplete="off"/>
       </el-form-item>
       <el-form-item label="联系电话" prop="phone" :rules="[{ required: true, message: '请输入联系电话' }]">
         <el-input placeholder="请输入联系电话" v-model="appendForm.phone" autocomplete="off"/>
@@ -143,38 +161,66 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="editorDialog" title="编辑" :close-on-click-modal="false" width="600">
+  <el-dialog v-model="editorDialog" title="编辑" :close-on-click-modal="false" width="700">
     <el-form
         ref="editorRef"
         :model="editorForm"
-        label-width="60px"
+        label-width="100px"
         style="padding: 20px 80px 20px 20px;"
     >
       <el-form-item label="编号" prop="id" :rules="[{ required: true, message: '请输入编号' }]">
         <el-input v-model="editorForm.id" disabled/>
       </el-form-item>
-      <el-form-item label="账号" prop="acc" :rules="[{ required: true, message: '请输入账号' }]">
-        <el-input disabled placeholder="请输入账号" v-model="editorForm.acc" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item label="密码" prop="pwd" :rules="[{ required: true, message: '请输入密码' }]">
-        <el-input disabled placeholder="请输入密码" type="password" v-model="editorForm.pwd" autocomplete="off"/>
-      </el-form-item>
       <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
         <el-input placeholder="请输入名称" v-model="editorForm.name" autocomplete="off"/>
       </el-form-item>
-      <el-form-item label="性别" prop="sex" :rules="[{ required: true, message: '请选择性别' }]">
-        <el-select v-model="editorForm.sex" placeholder="请选择性别">
-          <el-option v-for="item in sexList" :key="item.value" :label="item.label" :value="item.value"/>
-        </el-select>
+      <el-form-item label="价格" prop="price" :rules="[{ required: true, message: '请输入价格' }]">
+        <el-input placeholder="请输入价格" v-model="editorForm.price" autocomplete="off"/>
       </el-form-item>
-      <el-form-item label="年龄" prop="age" :rules="[{ required: true, message: '请输入年龄' }]">
-        <el-input placeholder="请输入年龄" v-model.number="editorForm.age" autocomplete="off"/>
+      <el-form-item label="封面" prop="cover" :rules="[{ required: true, message: '请输入封面' }]">
+        <el-upload
+            ref="editorUploadRef"
+            :limit="1"
+            :on-change="editorUpload"
+            :on-exceed="editorExceed"
+            :auto-upload="false"
+            list-type="picture"
+        >
+          <template #trigger>
+            <el-button type="primary">上传封面</el-button>
+          </template>
+        </el-upload>
       </el-form-item>
-      <el-form-item label="电话" prop="phone" :rules="[{ required: true, message: '请输入电话' }]">
-        <el-input placeholder="请输入电话" v-model="editorForm.phone" autocomplete="off"/>
+      <el-form-item label="标签" prop="tag" :rules="[{ required: true, message: '请输入标签' }]">
+        <el-input placeholder="请输入标签" v-model="editorForm.tag" autocomplete="off"/>
       </el-form-item>
-      <el-form-item label="地址" prop="address" :rules="[{ required: false, message: '请输入地址' }]">
+      <el-form-item label="地址" prop="address" :rules="[{ required: true, message: '请输入地址' }]">
         <el-input placeholder="请输入地址" v-model="editorForm.address" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="创建时间" prop="date" :rules="[{ required: true, message: '请选择创建时间' }]">
+        <el-date-picker
+            v-model="editorForm.date"
+            type="date" format="YYYY-MM-DD" value-format="YYYY-MM-DD"
+            placeholder="请选择创建时间"
+        />
+      </el-form-item>
+      <el-form-item label="房间数量" prop="bed" :rules="[{ required: true, message: '请输入房间数量' }]">
+        <el-input placeholder="请输入房间数量" v-model.number="editorForm.bed" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="面积" prop="area" :rules="[{ required: true, message: '请输入面积' }]">
+        <el-input placeholder="请输入面积" v-model="editorForm.area" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="联系电话" prop="phone" :rules="[{ required: true, message: '请输入联系电话' }]">
+        <el-input placeholder="请输入联系电话" v-model="editorForm.phone" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="经度" prop="jd" :rules="[{ required: true, message: '请输入经度' }]">
+        <el-input placeholder="请输入经度" v-model="editorForm.jd" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="维度" prop="wd" :rules="[{ required: true, message: '请输入维度' }]">
+        <el-input placeholder="请输入维度" v-model="editorForm.wd" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item label="详情" prop="content" :rules="[{ required: true, message: '请输入详情' }]">
+        <v-md-editor mode="edit" v-model="editorForm.content" height="400px"></v-md-editor>
       </el-form-item>
       <el-form-item label="状态" prop="status" :rules="[{ required: true, message: '请选择状态' }]">
         <el-select v-model="editorForm.status" placeholder="请选择状态">
@@ -191,6 +237,16 @@
       </div>
     </template>
   </el-dialog>
+
+  <el-dialog v-model="detailDialog" title="查看详情" :close-on-click-modal="false" width="800">
+    <v-md-editor mode="preview" v-model="detailForm.content" height="460px"></v-md-editor>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button size="large" @click="detailDialog = false">关闭</el-button>
+      </div>
+    </template>
+  </el-dialog>
+
 </template>
 
 <script setup lang="ts">
@@ -312,12 +368,12 @@ const appendForm = reactive({
   name: "",
   content: "",
   tag: "",
-  price: 0,
+  price: null,
   address: "",
   date: "",
   cover: "",
-  bed: 0,
-  area: 0,
+  bed: null,
+  area: null,
   phone: "",
   jd: "",
   wd: ""
@@ -341,6 +397,7 @@ const appendSubmit = (formEl: FormInstance | undefined) => {
     }
   })
 }
+
 const appendReset = (formEl: FormInstance | undefined) => {
   appendDialog.value = false;
   if (!formEl) return
@@ -353,12 +410,12 @@ const editorForm = ref({
   name: "",
   content: "",
   tag: "",
-  price: 0,
+  price: null,
   address: "",
   date: "",
   cover: "",
-  bed: 0,
-  area: 0,
+  bed: null,
+  area: null,
   phone: "",
   jd: "",
   wd: "",
@@ -386,24 +443,49 @@ const editorReset = (formEl: FormInstance | undefined) => {
   editorDialog.value = false;
   getTableData();
   // if (!formEl) return
-  // formEl.resetFields()
+  // formEl.resetFields();
 }
 const statusList = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
 const sexList = [{label: '男', value: '男'}, {label: '女', value: '女'}];
 
-const upload = ref<UploadInstance>();
-const handleUpload = (files) => {
-  console.log(files);
-  api.common.upload(files).then((res) => {
-    console.log(res);
+const appendUploadRef = ref<UploadInstance>();
+const appendUpload = (e) => {
+  const file = new FormData();
+  file.append('file', e.raw);
+  api.common.upload(file).then((res) => {
+    typeof res === "string" ? appendForm.cover = res : "";
   })
-
+}
+const appendExceed: UploadProps['onExceed'] = (files) => {
+  appendUploadRef.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  appendUploadRef.value!.handleStart(file)
 }
 
-const submitUpload = () => {
-  upload.value!.submit()
+const editorUploadRef = ref<UploadInstance>();
+const editorUpload = (e) => {
+  const file = new FormData();
+  file.append('file', e.raw);
+  api.common.upload(file).then((res) => {
+    typeof res === "string" ? editorForm.value.cover = res : "";
+  })
+}
+const editorExceed: UploadProps['onExceed'] = (files) => {
+  editorUploadRef.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  editorUploadRef.value!.handleStart(file)
 }
 
+const detailDialog = ref(false);
+const detailForm = ref({
+  content: "",
+})
+const handleDetail = (e) => {
+  detailForm.value.content = e;
+  detailDialog.value = true;
+}
 </script>
 
 <style scoped>
@@ -414,7 +496,7 @@ const submitUpload = () => {
 
 :deep(.v-md-editor__main) {
   display: flex;
-  flex-direction: column;
+  /*flex-direction: column;*/
 }
 
 :deep(.v-md-editor__editor-wrapper) {
@@ -441,7 +523,7 @@ const submitUpload = () => {
 }
 
 :deep(.el-upload-list--picture) {
-  width: 488px;
+  width: 468px;
 }
 
 :deep(.el-upload-list__item > img) {
