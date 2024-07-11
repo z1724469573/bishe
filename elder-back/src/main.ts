@@ -31,7 +31,7 @@ VueMarkdownEditor.use(vuepressTheme, {
 import VueUeditorWrap from 'vue-ueditor-wrap';
 
 //@ts-ignore
-app.use(ElementPlus, {locale: zhCn, size: "default", zIndex: 3000});
+app.use(ElementPlus, {locale: zhCn, size: "default"});
 app.use(VueMarkdownEditor);
 app.use(VueUeditorWrap);
 app.use(createPinia());
