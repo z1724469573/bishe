@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -44,12 +45,12 @@ public class ElderController {
         private String name;
         private String content;
         private String tag;
-        private Integer price;
+        private String price;
         private String address;
         private String date;
         private String cover;
         private Integer bed;
-        private Integer area;
+        private String area;
         private String phone;
         private String jd;
         private String wd;
@@ -64,7 +65,7 @@ public class ElderController {
             return Result.failure("名称已存在");
         }
         ElderEntity entity = new ElderEntity();
-        entity.setName(elder.getName());
+        BeanUtils.copyProperties(elder, entity);
         return Result.success(service.save(entity));
     }
 

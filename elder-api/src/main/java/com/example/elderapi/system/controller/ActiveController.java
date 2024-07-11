@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -59,7 +60,7 @@ public class ActiveController {
             return Result.failure("名称已存在");
         }
         ActiveEntity entity = new ActiveEntity();
-        entity.setName(active.getName());
+        BeanUtils.copyProperties(active, entity);
         return Result.success(service.save(entity));
     }
 

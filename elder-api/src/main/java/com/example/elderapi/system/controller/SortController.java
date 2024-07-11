@@ -8,6 +8,7 @@ import com.example.elderapi.system.service.SortService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -51,7 +52,7 @@ public class SortController {
             return Result.failure("名称已存在");
         }
         SortEntity entity = new SortEntity();
-        entity.setName(sort.getName());
+        BeanUtils.copyProperties(sort,entity);
         return Result.success(service.save(entity));
     }
 
