@@ -97,7 +97,8 @@ import {RouterView} from 'vue-router';
 body, html {
   width: calc(100vw - 0px);
   height: calc(100vh - 0px);
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 * {
@@ -144,7 +145,7 @@ scrollbar-track {
   background: #f1f1f1;
 }
 
-.el-card__header svg{
+.el-card__header svg {
   color: #0753a2;
   margin-right: 4px;
   transform: translateY(2px) scale(1.4);
