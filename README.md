@@ -57,18 +57,18 @@
 
 ## **安装教程**
 
-1. **克隆仓库到本地**：`git clone https://gitee.com/bestwishes0203/le-rongrong-smart-platform` 
+1. **克隆仓库到本地**：`git clone https://gitee.com/bestwishes0203/le-rongrong-smart-platform`
 2. **安装依赖**：`npm install` 或 `yarn`
 3. **启动后端服务**：
-   - 在后端项目目录下，首先刷新项目依赖：
-     ```
-     mvn clean install
-     ```
-   - 然后执行以下命令来启动Spring Boot应用程序：
-     ```
-     mvn spring-boot:run
-     ```
-   - 或者，如果你使用的是IntelliJ IDEA，可以直接在IDE中添加服务或手动运行`main`方法来启动。
+    - 在后端项目目录下，首先刷新项目依赖：
+      ```
+      mvn clean install
+      ```
+    - 然后执行以下命令来启动Spring Boot应用程序：
+      ```
+      mvn spring-boot:run
+      ```
+    - 或者，如果你使用的是IntelliJ IDEA，可以直接在IDE中添加服务或手动运行`main`方法来启动。
 4. **启动前端服务**：`npm run dev` 或 `yarn dev`
 5. **访问应用**：在浏览器中输入 `http://localhost:3000`（前端端口）和 `http://localhost:8080`（后端端口）
 
@@ -81,7 +81,6 @@
 5. **活动参与**：用户可以查看社区活动，报名参加。
 6. **服务预约**：用户可以预约社区服务。
 7. **养老院查看**：用户可以查看养老院信息，查看对比。
-
 
 ## 参与贡献
 
@@ -99,28 +98,31 @@
 - 使用Gitee官方手册快速上手。
 - 关注Gitee封面人物，了解社区风采。
 
-## 联系我们
+## 🚀 获取笔记
 
-如果您对我们的项目感兴趣，或者有任何技术问题想要探讨，欢迎通过以下方式与我联系。我非常期待与您交流，共同学习，共同进步！
-
-### 个人博客
-- 访问我的个人博客：[何福海的个人博客](https://bestwishes0203.gitee.io/blog/)
-- 在我的博客上留言或查看最新的技术文章。
-
-### QQ联系方式
-- QQ号码：2109664977
-- 您可以通过QQ直接与我联系，讨论技术问题或项目合作。
-
-### Gitee地址
-- Gitee主页：[bestwishes0203](https://gitee.com/bestwishes0203)
-- 在Gitee上查看我的开源项目，参与讨论，或提出建议。
-
-### GitHub地址
-- GitHub主页：[bestwishes0203](https://github.com/bestwishes0203)
-- 在GitHub上关注我的项目，参与贡献，或提出宝贵的意见。
-
-### 交流技术
-- 无论您对哪个技术领域感兴趣，都欢迎与我交流。
-- 我们可以一起探讨最新的技术趋势，分享编程经验，或者解决实际问题。
+- **后端学习笔记**：[https://gitee.com/bestwishes0203/Front-end-notes](https://gitee.com/bestwishes0203/Front-end-notes)
+- **前端学习笔记**：[https://gitee.com/bestwishes0203/Back-end-notes](https://gitee.com/bestwishes0203/Back-end-notes)
 
 ---
+
+## 📌 联系方式
+
+如果您对我们的项目感兴趣，或者有任何技术问题想要探讨，欢迎通过以下方式与我联系。我非常期待与您交流，共同学习，共同进步！🌊💡🤖
+
+- **邮箱**：[2109664977@qq.com](mailto:2109664977@qq.com) 📧
+- **Gitee**：[https://gitee.com/bestwishes0203](https://gitee.com/bestwishes0203) 🐱
+- **GitHub**：[https://github.com/bestwishes0203](https://github.com/bestwishes0203) 🐙
+- **CSDN**：[https://blog.csdn.net/interest_ing_/](https://blog.csdn.net/interest_ing_/) 📖
+- **个人博客**：[http://bestwishes0203.github.io/blog/](http://bestwishes0203.github.io/blog/) 🏠
+
+---
+
+## 🎉 结语
+
+感谢你的访问，期待与你在技术的道路上相遇！👋🌟🚀
+
+---
+
+
+
+
