@@ -5,6 +5,7 @@ import * as manager from "@/api/manager"
 import * as notice from "@/api/notice"
 import * as serve from "@/api/serve"
 import * as sort from "@/api/sort"
+import * as sortNews from "@/api/sortNews"
 import * as user from "@/api/user"
 
 const api = {
@@ -15,6 +16,7 @@ const api = {
     notice,
     serve,
     sort,
+    sortNews,
     user,
 }
 

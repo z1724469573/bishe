@@ -60,7 +60,7 @@ export const routes = [
             {
                 path: '/news',
                 name: 'news',
-                component: () => import('../views/pages/News.vue')
+                component: () => import('../views/pages/SortNews.vue')
             },
             {
                 path: '/about',

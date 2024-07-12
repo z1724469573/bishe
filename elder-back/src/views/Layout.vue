@@ -27,9 +27,8 @@
             </template>
             <el-menu-item-group>
               <template #title><span>系统管理</span></template>
-              <el-menu-item v-for="(item,index) in system" :index="item.path" @click="handleMenu(item)">{{
-                  item.name
-                }}
+              <el-menu-item v-for="(item,index) in system" :index="item.path" @click="handleMenu(item)">
+                {{ item.name }}
               </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
