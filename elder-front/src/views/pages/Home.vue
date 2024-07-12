@@ -12,8 +12,36 @@
         </el-col>
         <el-col :span="12">
           <el-tabs type="card" v-model="activeName" @tab-click="handleName">
-            <el-tab-pane label="最新资讯" name="first">最新资讯</el-tab-pane>
-            <el-tab-pane label="最热资讯" name="second">最热资讯</el-tab-pane>
+            <el-tab-pane label="最新资讯" name="first">
+              <el-row style="cursor: pointer;margin-bottom: 4px;" justify="space-between"
+                      v-for="(item,index) in sortNewsLate">
+                <el-col :span="18">
+                  <el-link>
+                    <el-text size="large" :line-clamp="1">
+                      {{ item.title }}
+                    </el-text>
+                  </el-link>
+                </el-col>
+                <el-col :span="4">
+                  <el-text style="margin-top: 4px;" :line-clamp="1">{{ item.date }}</el-text>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="最热资讯" name="second">
+              <el-row style="cursor: pointer;margin-bottom: 4px;" justify="space-between"
+                      v-for="(item,index) in sortNewsHots">
+                <el-col :span="18">
+                  <el-link>
+                    <el-text size="large" :line-clamp="1">
+                      {{ item.title }}
+                    </el-text>
+                  </el-link>
+                </el-col>
+                <el-col :span="4">
+                  <el-text style="margin-top: 4px;" :line-clamp="1">{{ item.date }}</el-text>
+                </el-col>
+              </el-row>
+            </el-tab-pane>
           </el-tabs>
         </el-col>
       </el-row>
@@ -26,7 +54,29 @@
               </div>
             </template>
             <el-tabs v-model="activeSort" type="card" @tab-click="handleSort">
-              <el-tab-pane v-for="(item,index) in newsSort" :label="item" :name="index">{{ item }}</el-tab-pane>
+              <el-tab-pane v-for="(item,index) in sortList" :label="item.name" :name="index">
+                <el-card shadow="never" style="margin: 5px 0;" v-for="(item,index) in sortNewsData">
+                  <el-row justify="space-between">
+                    <el-image style="width: 60px; height: 60px" :src="item.cover" :fit="fit"/>
+                    <el-col :span="21">
+                      <div style="margin-bottom: 14px;">
+                        <el-text size="large" style="cursor: pointer;"><el-link>{{ item.title }}</el-link></el-text>
+                      </div>
+                      <el-row align="middle">
+                        <el-col :span="5">
+                          <el-tag size="small">{{ item.sortName }}</el-tag>
+                        </el-col>
+                        <el-col :span="5">
+                          <el-text>{{ item.date }}</el-text>
+                        </el-col>
+                        <el-col :span="8">
+                          <el-text> 阅读：{{ item.looks }}</el-text>
+                        </el-col>
+                      </el-row>
+                    </el-col>
+                  </el-row>
+                </el-card>
+              </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
@@ -50,15 +100,34 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
 import router from "@/router";
 import one from "@/assets/swiper/1.78018329.jpeg"
 import two from "@/assets/swiper/2.952132ef.jpeg"
+import api from "@/api";
+
+onMounted(() => {
+  api.sort.sortList().then((res) => {
+    sortList.value = res.data;
+  })
+  api.sortNews.sortNewsLate().then((res) => {
+    sortNewsLate.value = res.data.slice(0, 8);
+  })
+  api.sortNews.sortNewsHots().then((res) => {
+    sortNewsHots.value = res.data.slice(0, 8);
+  })
+  api.sortNews.sortNewsList().then((res) => {
+    sortNewsData.value = res.data.slice(0, 5);
+  })
+})
+const sortNewsData = ref([]);
+const sortNewsLate = ref([]);
+const sortNewsHots = ref([]);
 
 const activeName = ref('first');
 const activeSort = ref(0);
-const newsSort = ref(["全部", "养老动态", "养老政策", "养老服务", "养老产业", "养老模式", "养老金", "居家养老"]);
+const sortList = ref([]);
 const swiperList = ref([one, two]);
 const handleName = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)
@@ -93,5 +162,13 @@ const handleSelect = () => {
 
 .el-carousel__item:nth-child(2n + 1) {
   background-color: #d3dce6;
+}
+
+.overflow-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 </style>

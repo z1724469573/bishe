@@ -1,72 +1,70 @@
 <template>
-  <div class="common-layout">
-    <el-container>
-      <el-header>
-        <el-row justify="space-between" align="middle" style="padding: 0 30px;">
-          <el-col :span="6">
-            <el-row :gutter="0" style="width: 60%;height: 60px;" align="middle" justify="center">
-              <el-col :span="8">
-                <el-image style="width: 100%; height: 40px;" :src="logo" fit="contain"/>
-              </el-col>
-              <el-col :span="16">
-                <b style="font-size: 20px;color: #0753a2;">社区养老系统</b>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="14">
-            <el-menu
-                :default-active="activeIndex"
-                mode="horizontal"
-                @select="handleSelect"
-                router
-            >
-              <el-menu-item v-for="(item,index) in routes" :index="item.path" style="font-size: 16px;">
-                <b>{{ item.name }}</b>
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-          <el-col :span="3">
-            <el-row align="middle">
-              <el-col :span="6">
-                <el-avatar shape="square"
-                           src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-                />
-              </el-col>
-              <el-col :span="18">
-                <el-dropdown>
+  <el-container>
+    <el-header>
+      <el-row justify="space-between" align="middle" style="padding: 0 30px;">
+        <el-col :span="6">
+          <el-row :gutter="0" style="width: 60%;height: 60px;" align="middle" justify="center">
+            <el-col :span="8">
+              <el-image style="width: 100%; height: 40px;" :src="logo" fit="contain"/>
+            </el-col>
+            <el-col :span="16">
+              <b style="font-size: 20px;color: #0753a2;">社区养老系统</b>
+            </el-col>
+          </el-row>
+        </el-col>
+        <el-col :span="14">
+          <el-menu
+              :default-active="activeIndex"
+              mode="horizontal"
+              @select="handleSelect"
+              router
+          >
+            <el-menu-item v-for="(item,index) in routes" :index="item.path" style="font-size: 16px;">
+              <b>{{ item.name }}</b>
+            </el-menu-item>
+          </el-menu>
+        </el-col>
+        <el-col :span="3">
+          <el-row align="middle">
+            <el-col :span="6">
+              <el-avatar shape="square"
+                         src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+              />
+            </el-col>
+            <el-col :span="18">
+              <el-dropdown>
               <span>
                 Dropdown List
                 <el-icon>
                   <arrow-down/>
                 </el-icon>
               </span>
-                  <template #dropdown>
-                    <el-dropdown-menu>
-                      <el-dropdown-item>Action 1</el-dropdown-item>
-                      <el-dropdown-item>Action 2</el-dropdown-item>
-                      <el-dropdown-item>Action 3</el-dropdown-item>
-                      <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
-                    </el-dropdown-menu>
-                  </template>
-                </el-dropdown>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-      </el-header>
-      <el-main>
-        <RouterView/>
-      </el-main>
-      <el-footer style="color: #666;font-size: 14px;">
-        <el-row justify="center">
-          <p style="margin: 10px 0;">社区养老系统 客服电话 010-55669988</p>
-        </el-row>
-        <el-row justify="center" style="padding-bottom: 30px;">
-          <p>CopyRight© 2001-2023 Bestwishes0203版权所有</p>
-        </el-row>
-      </el-footer>
-    </el-container>
-  </div>
+                <template #dropdown>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>Action 1</el-dropdown-item>
+                    <el-dropdown-item>Action 2</el-dropdown-item>
+                    <el-dropdown-item>Action 3</el-dropdown-item>
+                    <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
+                  </el-dropdown-menu>
+                </template>
+              </el-dropdown>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-main>
+      <RouterView/>
+    </el-main>
+    <el-footer style="color: #666;font-size: 14px;">
+      <el-row justify="center">
+        <p style="margin: 10px 0;">社区养老系统 客服电话 010-55669988</p>
+      </el-row>
+      <el-row justify="center" style="padding-bottom: 30px;">
+        <p>CopyRight© 2001-2023 Bestwishes0203版权所有</p>
+      </el-row>
+    </el-footer>
+  </el-container>
 </template>
 
 <script setup lang="ts">

@@ -17,7 +17,7 @@
             </el-descriptions>
             <el-button style="width: 100%;margin-top: 20px;" size="large" plain type="primary" :disabled="isPast">
               <a v-if="!isPast">活动可报名</a>
-              <a v-else>活动已过期</a>
+              <a v-else>活动已结束</a>
             </el-button>
           </el-col>
         </el-row>

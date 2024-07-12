@@ -10,9 +10,89 @@
 import {ref} from "vue";
 
 const content = ref(`
+# 社区养老系统
 
-# 😍开发者
-## 😁 Bestwishes0203
+## 介绍
+
+社区养老系统是一个现代化的养老服务平台，旨在为老年人提供一个便捷、舒适的社区生活环境。该系统采用前后端分离的架构设计，结合了最新的技术栈，以确保系统的高性能和易用性。无论是个人用户还是养老机构，都能通过这个平台享受到智能化的养老服务。
+
+
+## 技术栈
+
+- **Node.js**：作为后端开发的主要语言，提供了强大的异步处理能力和丰富的模块库。
+- **NPM**：Node.js的包管理器，用于管理项目依赖，简化开发流程。
+- **Spring Boot**：用于构建快速、易于部署的Spring应用程序，提供了丰富的开发工具和简化的配置。
+- **MySQL**：关系型数据库管理系统，用于存储用户数据、服务信息等。
+- **Redis**：内存中的数据结构存储系统，用作数据库、缓存和消息代理。
+- **Vue.js**：渐进式JavaScript框架，用于构建用户界面和单页应用程序。
+- **Vite**：现代化的前端构建工具，提供快速的冷启动和即时的模块热更新。
+
+## 功能特点
+
+- **前后端分离**：前端和后端独立开发，提高了开发效率和系统的可维护性。
+- **验证码功能**：增强系统安全性，防止恶意攻击。
+- **图片上传**：用户可以上传个人照片或相关文档，方便信息展示和管理。
+- **信息管理**：提供用户信息、服务项目等的管理功能，便于用户和管理员操作。
+- **后台管理**：管理员可以通过后台管理系统，进行用户管理、数据统计等操作。
+
+## 开发环境
+
+- **IDEA**：集成开发环境，用于编写和管理代码。
+- **DataGrap**：数据库管理工具，用于设计和管理MySQL数据库。
+- **Webstorm**：前端开发IDE，支持Vue.js等现代前端技术。
+- **Apifox**：API开发工具，用于设计、测试和文档化API。
+- **Another Redis Desktop Manager**：Redis数据库管理工具，方便开发者操作Redis。
+- **Navicat Premium 16**：数据库开发工具，支持多种数据库，包括MySQL和Redis。
+
+## **安装教程**
+
+1. **克隆仓库到本地**：\`git clone https://gitee.com/bestwishes0203/le-rongrong-smart-platform\`
+2. **安装依赖**：\`npm install\` 或 \`yarn\`
+3. **启动后端服务**：
+    - 在后端项目目录下，首先刷新项目依赖：
+      \`\`\`
+      mvn clean install
+      \`\`\`
+    - 然后执行以下命令来启动Spring Boot应用程序：
+      \`\`\`
+      mvn spring-boot:run
+      \`\`\`
+    - 或者，如果你使用的是IntelliJ IDEA，可以直接在IDE中添加服务或手动运行\`main\`方法来启动。
+4. **启动前端服务**：\`npm run dev\` 或 \`yarn dev\`
+5. **访问应用**：在浏览器中输入 \`http://localhost:3000\`（前端端口）和 \`http://localhost:8080\`（后端端口）
+
+## **使用说明**
+
+1. **注册/登录**：用户可以通过注册新账号或使用现有账号登录系统。
+2. **信息管理**：用户可以查看和编辑个人信息，上传图片等。
+3. **服务浏览**：用户可以浏览社区提供的养老服务项目。
+4. **后台管理**：管理员可以管理用户信息、服务项目和系统设置。
+5. **活动参与**：用户可以查看社区活动，报名参加。
+6. **服务预约**：用户可以预约社区服务。
+7. **养老院查看**：用户可以查看养老院信息，查看对比。
+
+## 参与贡献
+
+1. Fork 本仓库到你的Gitee账户。
+2. 新建分支：\`git checkout -b feature-your-feature\`
+3. 提交代码：\`git commit -am 'Add some feature'\`
+4. 新建Pull Request：在Gitee上发起PR，等待审核。
+
+## 特技
+
+- 使用多语言Readme支持，如Readme_en.md和Readme_zh.md。
+- 通过Gitee官方博客了解最新的开发动态。
+- 在Gitee探索页面发现更多优秀的开源项目。
+- 参与GVP项目，展示你的开源贡献。
+- 使用Gitee官方手册快速上手。
+- 关注Gitee封面人物，了解社区风采。
+
+## 🚀 获取笔记
+
+- **后端学习笔记**：[https://gitee.com/bestwishes0203/Front-end-notes](https://gitee.com/bestwishes0203/Front-end-notes)
+- **前端学习笔记**：[https://gitee.com/bestwishes0203/Back-end-notes](https://gitee.com/bestwishes0203/Back-end-notes)
+
+---
 
 ## 📌 联系方式
 
@@ -23,32 +103,6 @@ const content = ref(`
 - **GitHub**：[https://github.com/bestwishes0203](https://github.com/bestwishes0203) 🐙
 - **CSDN**：[https://blog.csdn.net/interest_ing_/](https://blog.csdn.net/interest_ing_/) 📖
 - **个人博客**：[http://bestwishes0203.github.io/blog/](http://bestwishes0203.github.io/blog/) 🏠
-
-
-## 🤖 个人介绍
-
- - 欢迎来到我的技术小宇宙！🌌 这里不仅是我记录技术点滴的后花园，也是我分享学习心得和项目经验的乐园。📚 无论你是技术小白还是资深大牛，这里总有一些内容能触动你的好奇心。🔍
- - 作为一名对编程和技术创新充满热情的开发者，我在这里与你分享我对各种技术话题的见解和思考。🤖 我相信，技术的力量能够改变世界，而交流与分享则是我们共同进步的阶梯。🚀
-
-
-## 🛠️ 技能清单
-
- - **编程语言**：Java、C、C++、Python、Go、
- - **前端技术**：Jquery、Vue.js、React、Echarts、Threejs
- - **UI设计**: Element-ui、Antd、Color-ui
- - **后端技术**：Spring Boot、Spring Cloud、Mybatis-plus、Swagger
- - **移动开发**：Android
- - **操作系统**：Windows、Ubuntu、CentOS
- - **开发框架**：微信小程序、uni-app、RuoYi
- - **开发工具**：VSCode、IDEA、WebStorm、CLion 、DataGrip 、GoLand 、Eclipse、HbuildX、Navicat、Xshell、Xftp 7、Android Studio、Postman、Apifox
- - **数据库技术**：MySQL、Redis、SQL Server
- - **版本控制**：Git
-
-## 🚀  获取笔记
-
-- **后端学习笔记**：[https://gitee.com/bestwishes0203/Front-end-notes](https://gitee.com/bestwishes0203/Front-end-notes)
-- **前端学习笔记**：[https://gitee.com/bestwishes0203/Back-end-notes](https://gitee.com/bestwishes0203/Back-end-notes)
-
 
 ---
 
