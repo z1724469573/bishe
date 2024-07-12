@@ -51,8 +51,8 @@ public class SortNewsEntity extends Model<SortNewsEntity> {
     private String cover;
 
     @Schema(description = "阅读")
-    @TableField("news_read")
-    private String read;
+    @TableField("news_looks")
+    private Integer looks;
 
     @Schema(description = "状态(1 正常 0 禁用)")
     @TableField("status")
