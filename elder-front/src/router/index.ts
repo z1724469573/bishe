@@ -7,6 +7,11 @@ export const routes = [
         component: () => import('../views/Login.vue')
     },
     {
+        path: '/regist',
+        name: 'regist',
+        component: () => import('../views/Regist.vue')
+    },
+    {
         path: '/layout',
         name: 'layout',
         redirect: '/home',
