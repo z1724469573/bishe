@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+
 import java.io.Serializable;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,10 @@ public class UserEntity extends Model<UserEntity> {
     @Schema(description = "主键")
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer id;
+
+    @Schema(description = "头像")
+    @TableField("user_pic")
+    private String pic;
 
     @Schema(description = "账号")
     @TableField("user_acc")

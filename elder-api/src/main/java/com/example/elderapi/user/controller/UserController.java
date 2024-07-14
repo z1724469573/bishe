@@ -43,6 +43,7 @@ public class UserController {
 
     @Data
     static class User {
+        private String pic;
         private String acc;
         private String pwd;
         private String name;

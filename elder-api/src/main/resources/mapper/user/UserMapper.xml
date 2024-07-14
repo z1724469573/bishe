@@ -4,20 +4,21 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.example.elderapi.user.entity.UserEntity">
-        <id column="user_id" property="id" />
-        <result column="user_acc" property="acc" />
-        <result column="user_pwd" property="pwd" />
-        <result column="user_name" property="name" />
-        <result column="user_sex" property="sex" />
-        <result column="user_age" property="age" />
-        <result column="user_phone" property="phone" />
-        <result column="user_address" property="address" />
-        <result column="status" property="status" />
+        <id column="user_id" property="id"/>
+        <result column="user_pic" property="pic"/>
+        <result column="user_acc" property="acc"/>
+        <result column="user_pwd" property="pwd"/>
+        <result column="user_name" property="name"/>
+        <result column="user_sex" property="sex"/>
+        <result column="user_age" property="age"/>
+        <result column="user_phone" property="phone"/>
+        <result column="user_address" property="address"/>
+        <result column="status" property="status"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        user_id, user_acc, user_pwd, user_name, user_sex, user_age, user_phone, user_address, status
+        user_id, user_pic, user_acc, user_pwd, user_name, user_sex, user_age, user_phone, user_address, status
     </sql>
 
 </mapper>
