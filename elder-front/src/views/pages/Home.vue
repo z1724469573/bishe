@@ -11,12 +11,12 @@
           </el-carousel>
         </el-col>
         <el-col :span="12">
-          <el-tabs type="card" v-model="activeName" @tab-click="handleName">
+          <el-tabs type="card" v-model="classifyHots" @tab-click="handleHots">
             <el-tab-pane label="最新资讯" name="first">
               <el-row style="cursor: pointer;margin-bottom: 4px;" justify="space-between"
                       v-for="(item,index) in sortNewsLate">
                 <el-col :span="18">
-                  <el-link>
+                  <el-link @click="handleNews(item)">
                     <el-text size="large" :line-clamp="1">
                       {{ item.title }}
                     </el-text>
@@ -31,7 +31,7 @@
               <el-row style="cursor: pointer;margin-bottom: 4px;" justify="space-between"
                       v-for="(item,index) in sortNewsHots">
                 <el-col :span="18">
-                  <el-link>
+                  <el-link @click="handleNews(item)">
                     <el-text size="large" :line-clamp="1">
                       {{ item.title }}
                     </el-text>
@@ -53,24 +53,30 @@
                 <span><b>资讯分类</b></span>
               </div>
             </template>
-            <el-tabs v-model="activeSort" type="card" @tab-click="handleSort">
+            <el-tabs v-model="classifySort" type="card" @tab-click="handleSort">
               <el-tab-pane v-for="(item,index) in sortList" :label="item.name" :name="index">
-                <el-card shadow="never" style="margin: 5px 0;" v-for="(item,index) in sortNewsData">
-                  <el-row justify="space-between">
-                    <el-image style="width: 60px; height: 60px" :src="item.cover" :fit="fit"/>
+                <el-card shadow="never" style="margin: 5px 0;" v-for="(item,index) in showNewsData">
+                  <el-row justify="start">
+                    <el-col :span="3">
+                      <el-image style="width: 60px; height: 60px;border-radius: 2px;" :src="item.cover"/>
+                    </el-col>
                     <el-col :span="21">
                       <div style="margin-bottom: 14px;">
-                        <el-text size="large" style="cursor: pointer;"><el-link>{{ item.title }}</el-link></el-text>
+                        <el-link>
+                          <el-text tag="p" size="large" :line-clamp="1" @click="handleNews(item)">
+                            {{ item.title }}
+                          </el-text>
+                        </el-link>
                       </div>
                       <el-row align="middle">
                         <el-col :span="5">
                           <el-tag size="small">{{ item.sortName }}</el-tag>
                         </el-col>
                         <el-col :span="5">
-                          <el-text>{{ item.date }}</el-text>
+                          <el-text :line-clamp="1">{{ item.date }}</el-text>
                         </el-col>
                         <el-col :span="8">
-                          <el-text> 阅读：{{ item.looks }}</el-text>
+                          <el-text :line-clamp="1"> 阅读：{{ item.looks }}</el-text>
                         </el-col>
                       </el-row>
                     </el-col>
@@ -78,6 +84,10 @@
                 </el-card>
               </el-tab-pane>
             </el-tabs>
+            <el-row justify="end" style="margin-top: 10px;">
+              <el-pagination background :page-size="5" layout="total, prev, pager, next" :total="sortLen"
+                             @current-change="handleNewsPager"/>
+            </el-row>
           </el-card>
         </el-col>
         <el-col :span="8">
@@ -90,7 +100,17 @@
                 </el-row>
               </div>
             </template>
-
+            <el-row style="padding: 5px 0;" justify="space-between" v-for="(item,index) in activeList">
+              <el-col :span="7">
+                <el-image style="width: 70px;height: 70px;border-radius: 3px;" :src="item.cover"></el-image>
+              </el-col>
+              <el-col :span="17">
+                <el-link @click="handleActive(item)">
+                  <el-text size="large" :line-clamp="2">{{ item.name }}</el-text>
+                </el-link>
+                <el-text style="margin-top: 10px;" tag="p">{{ item.start }}</el-text>
+              </el-col>
+            </el-row>
           </el-card>
         </el-col>
       </el-row>
@@ -103,8 +123,8 @@
 import {onMounted, ref} from 'vue'
 import type {TabsPaneContext} from 'element-plus'
 import router from "@/router";
-import one from "@/assets/swiper/1.78018329.jpeg"
-import two from "@/assets/swiper/2.952132ef.jpeg"
+import oneSW from "@/assets/swiper/1.78018329.jpeg"
+import twoSW from "@/assets/swiper/2.952132ef.jpeg"
 import api from "@/api";
 
 onMounted(() => {
@@ -118,23 +138,54 @@ onMounted(() => {
     sortNewsHots.value = res.data.slice(0, 8);
   })
   api.sortNews.sortNewsList().then((res) => {
-    sortNewsData.value = res.data.slice(0, 5);
+    sortNewsData.value = res.data;
+    showNewsData.value = res.data.slice(0, 5);
+    sortLen.value = res.data.length;
+  })
+  api.active.activeList().then((res) => {
+    activeList.value = res.data.slice(0, 7);
   })
 })
+const showNewsData = ref([]);
 const sortNewsData = ref([]);
+const sortLen = ref(0);
 const sortNewsLate = ref([]);
 const sortNewsHots = ref([]);
+const activeList = ref([]);
+const handleNews = (e) => {
+  const name = JSON.stringify(e.title);
+  router.push({
+    path: "/newsDetail",
+    query: {name},
+  })
+}
 
-const activeName = ref('first');
-const activeSort = ref(0);
+const classifyHots = ref('first');
+const classifySort = ref(0);
 const sortList = ref([]);
-const swiperList = ref([one, two]);
-const handleName = (tab: TabsPaneContext, event: Event) => {
+const swiperList = ref([oneSW, twoSW]);
+const handleHots = (tab: TabsPaneContext, event: Event) => {
   console.log(tab, event)
 }
 
 const handleSort = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
+  api.sortNews.sortNewsSort(tab.props.label).then((res) => {
+    sortNewsData.value = res.data;
+    showNewsData.value = res.data.slice(0, 5);
+    sortLen.value = res.data.length;
+  })
+}
+
+const handleNewsPager = (e) => {
+  showNewsData.value = sortNewsData.value.slice((e - 1) * 5, e * 5);
+}
+
+const handleActive = (e) => {
+  const name = JSON.stringify(e.name);
+  router.push({
+    path: "/activeDetail",
+    query: {name},
+  })
 }
 
 const handleSelect = () => {

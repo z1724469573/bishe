@@ -18,6 +18,11 @@ export const routes = [
                 component: () => import('../views/pages/Home.vue')
             },
             {
+                path: '/newsDetail',
+                name: '资讯详情',
+                component: () => import('../views/pages/NewsDetail.vue')
+            },
+            {
                 path: '/active',
                 name: '公益活动',
                 component: () => import('../views/pages/Active.vue')

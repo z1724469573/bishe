@@ -25,7 +25,6 @@ onMounted(() => {
 const getElderList = () => {
   api.elder.elderList().then((res) => {
     elderList.value = res.data;
-    console.log(res.data);
   })
 }
 

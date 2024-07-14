@@ -7,6 +7,7 @@ import com.example.elderapi.user.mapper.UserMapper;
 import com.example.elderapi.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -96,6 +97,19 @@ public class UserController {
         QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
         wrapper.like("user_name", name);
         return Result.success(mapper.selectList(wrapper));
+    }
+
+    @Operation(summary = "登录")
+    @PostMapping("/userLogin")
+    public Result<?> userLogin(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
+        if (!session.getAttribute("code").equals(code)) {
+            return Result.failure("验证码错误");
+        }
+        QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_acc", acc);
+        UserEntity user = service.getOne(wrapper);
+
+        return Result.success();
     }
 
 }

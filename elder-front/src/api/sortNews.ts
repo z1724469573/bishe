@@ -152,3 +152,20 @@ export function sortNewsHots(): Promise<SortNewsHotsRes> {
     return request.get(`/sortNewsEntity/sortNewsHots`);
 }
 
+
+// 响应接口
+export interface SortNewsSortRes {
+    message: string;
+    success: boolean;
+    code: number;
+    data: any;
+}
+
+/**
+ * 分类
+ * @param {string} name
+ * @returns
+ */
+export function sortNewsSort(name: string): Promise<SortNewsSortRes> {
+    return request.post(`/sortNewsEntity/sortNewsSort?name=${name}`);
+}
