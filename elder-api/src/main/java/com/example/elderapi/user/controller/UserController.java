@@ -2,6 +2,7 @@ package com.example.elderapi.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.elderapi.common.resp.Result;
+import com.example.elderapi.common.utils.JWTUtils;
 import com.example.elderapi.user.entity.UserEntity;
 import com.example.elderapi.user.mapper.UserMapper;
 import com.example.elderapi.user.service.UserService;
@@ -10,8 +11,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -109,8 +113,69 @@ public class UserController {
         QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("user_acc", acc);
         UserEntity user = service.getOne(wrapper);
+        if (user == null) {
+            return Result.failure("账号不存在，登陆失败");
+        }
+        if (user.getStatus() == 0) {
+            return Result.failure("账号状态异常，请联系管理员处理");
+        }
+        pwd = DigestUtils.md5DigestAsHex(pwd.getBytes(StandardCharsets.UTF_8));
+        if (!pwd.equals(user.getPwd())) {
+            return Result.failure("密码错误，登陆失败");
+        }
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", user.getId().toString());
+        map.put("acc", user.getAcc());
+        map.put("name", user.getName());
+        String token = JWTUtils.generateToken(map);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("token", token);
+        hashMap.put("user", user);
+        return Result.success("登录成功", hashMap);
+    }
 
-        return Result.success();
+    @Operation(summary = "注册")
+    @PostMapping("/userRegist")
+    public Result<?> userRegist(@RequestParam String acc, @RequestParam String pwd, @RequestParam String name, @RequestParam String code, HttpSession session) {
+        if (!session.getAttribute("code").equals(code)) {
+            return Result.failure("验证码错误");
+        }
+        QueryWrapper<UserEntity> wrapperA = new QueryWrapper<>();
+        wrapperA.eq("user_acc", acc);
+        UserEntity userA = service.getOne(wrapperA);
+        if (userA != null) {
+            return Result.failure("账号已存在，注册失败");
+        }
+        UserEntity user = new UserEntity();
+        user.setAcc(acc).setPhone(acc).setPwd(pwd).setName(name);
+        if (service.save(user)) {
+            return Result.success("注册成功");
+        }
+        return Result.success("注册失败");
+    }
+
+    @Operation(summary = "找回密码")
+    @PostMapping("/userForget")
+    public Result<?> userForget(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
+        if (!session.getAttribute("code").equals(code)) {
+            return Result.failure("验证码错误");
+        }
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        return Result.success("登录成功", hashMap);
+    }
+
+    @Operation(summary = "找回密码")
+    @PostMapping("/userChange")
+    public Result<?> userChange(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
+        if (!session.getAttribute("code").equals(code)) {
+            return Result.failure("验证码错误");
+        }
+
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        return Result.success("登录成功", hashMap);
     }
 
 }
