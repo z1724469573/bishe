@@ -36,20 +36,19 @@
               <template #footer>
                 <el-row justify="end" align="middle">
                   <el-col :span="10">
-                    <div style="font-size: 14px;">
-                      还没有账号？前往
-                      <em style="font-style: normal;color: #0753a2;cursor: pointer;">注册</em>
-                    </div>
+                    <el-link @click="router.push('/regist')">
+                      <el-text tag="a">已有账号？前往注册</el-text>
+                    </el-link>
                   </el-col>
                 </el-row>
               </template>
               <el-form
-                  style="padding-right: 60px"
                   ref="ruleFormRef"
                   :model="ruleForm"
                   status-icon
                   :rules="rules"
                   label-width="60px"
+                  style="padding-right: 60px"
               >
                 <el-form-item label="账号" prop="acc">
                   <el-input placeholder="请输入账号" size="large" v-model="ruleForm.acc"/>
@@ -93,7 +92,7 @@ import {onMounted, reactive, ref} from 'vue'
 import type {FormInstance, FormRules} from 'element-plus'
 import {ElMessage} from "element-plus";
 import logo from "@/assets/logo.png"
-import login from "@/assets/login.4b369e29.png"
+import login from "@/assets/swiper/1.78018329.jpeg"
 import router from "@/router";
 import api from "@/api";
 
@@ -152,9 +151,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
   //@ts-ignore
   formEl.validate((valid) => {
     if (valid) {
-      ElMessage({message: 'submit', type: 'success', grouping: true, showClose: true})
-      console.log('submit!');
-      router.push("/home");
+      api.user.userLogin(ruleForm.acc, ruleForm.pwd, ruleForm.code).then((res) => {
+        if (res.success) {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          localStorage.setItem("token", JSON.stringify(res.data.token));
+          router.push("/home");
+        }
+        ElMessage({message: res.message, type: res.success ? 'success' : 'error', grouping: true, showClose: true})
+      })
     } else {
       console.log('error submit!');
     }
