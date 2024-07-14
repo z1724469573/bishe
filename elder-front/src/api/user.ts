@@ -123,3 +123,22 @@ export function userSearch(name: string): Promise<UserSearchRes> {
     return request.post(`/userEntity/userSearch?name=${name}`);
 }
 
+// 响应接口
+export interface UserLoginRes {
+    message: string;
+    success: boolean;
+    code: number;
+    data: Record<string, unknown>;
+}
+
+/**
+ * 登录
+ * @param {string} acc
+ * @param {string} pwd
+ * @param {string} code
+ * @returns
+ */
+export function userLogin(acc: string, pwd: string, code: string): Promise<UserLoginRes> {
+    return request.post(`/userEntity/userLogin?acc=${acc}&pwd=${pwd}&code=${code}`);
+}
+
