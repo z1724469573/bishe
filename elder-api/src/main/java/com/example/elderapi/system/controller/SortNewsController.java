@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -145,6 +146,39 @@ public class SortNewsController {
         QueryWrapper<SortNewsEntity> wrapper = new QueryWrapper<>();
         wrapper.like("news_title", name);
         return Result.success(mapper.selectList(wrapper));
+    }
+
+    @Operation(summary = "分类")
+    @PostMapping("/sortNewsSort")
+    public Result<?> sortNewsSort(@RequestParam String name) {
+        if (Objects.equals(name, "全部")) {
+            List<SortNewsEntity> list = service.list();
+            ArrayList<SortNewsRs> listRS = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++) {
+                SortNewsEntity sortNews = list.get(i);
+                SortNewsRs newsRs = new SortNewsRs();
+                BeanUtils.copyProperties(sortNews, newsRs);
+                SortEntity sort = sortService.getById(sortNews.getSortId());
+                newsRs.setSortName(sort.getName());
+                listRS.add(newsRs);
+            }
+            return Result.success(listRS);
+        }
+        QueryWrapper<SortEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("sort_name", name);
+        SortEntity sort = sortService.getOne(wrapper);
+        QueryWrapper<SortNewsEntity> wrapperN = new QueryWrapper<>();
+        wrapperN.eq("news_sort_id", sort.getId());
+        List<SortNewsEntity> list = mapper.selectList(wrapperN);
+        ArrayList<SortNewsRs> listRS = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            SortNewsEntity sortNews = list.get(i);
+            SortNewsRs newsRs = new SortNewsRs();
+            BeanUtils.copyProperties(sortNews, newsRs);
+            newsRs.setSortName(name);
+            listRS.add(newsRs);
+        }
+        return Result.success(listRS);
     }
 
 }
