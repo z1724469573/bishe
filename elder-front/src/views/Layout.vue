@@ -28,8 +28,8 @@
           </el-row>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item>我报名的活动</el-dropdown-item>
-              <el-dropdown-item>我预约的服务</el-dropdown-item>
+              <el-dropdown-item @click="router.push('/activeSh')">我报名的活动</el-dropdown-item>
+              <el-dropdown-item @click="router.push('/serveSh')">我预约的服务</el-dropdown-item>
               <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
             </el-dropdown-menu>
           </template>

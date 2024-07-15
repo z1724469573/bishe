@@ -54,6 +54,11 @@ export const routes = [
                 component: () => import('../views/pages/Active.vue')
             },
             {
+                path: '/activeSh',
+                name: '我报名的活动',
+                component: () => import('../views/pages/ActiveSh.vue')
+            },
+            {
                 path: '/activeDetail',
                 name: '活动详情',
                 component: () => import('../views/pages/ActiveDetail.vue')
@@ -62,6 +67,11 @@ export const routes = [
                 path: '/serve',
                 name: '养老服务',
                 component: () => import('../views/pages/Serve.vue')
+            },
+            {
+                path: '/serveSh',
+                name: '我预约的服务',
+                component: () => import('../views/pages/ServeSh.vue')
             },
             {
                 path: '/elder',

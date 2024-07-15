@@ -8,7 +8,7 @@
         <result column="sh_active_id" property="activeId" />
         <result column="sh_user_id" property="userId" />
         <result column="sh_date" property="date" />
-        <result column="sh_check" property="check" />
+        <result column="sh_checked" property="checked" />
         <result column="sh_advice" property="advice" />
         <result column="status" property="status" />
     </resultMap>
