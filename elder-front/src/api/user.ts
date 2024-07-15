@@ -142,3 +142,42 @@ export function userLogin(acc: string, pwd: string, code: string): Promise<UserL
     return request.post(`/userEntity/userLogin?acc=${acc}&pwd=${pwd}&code=${code}`);
 }
 
+// 响应接口
+export interface UserRegistRes {
+    message: string;
+    success: boolean;
+    code: number;
+    data: Record<string, unknown>;
+}
+
+/**
+ * 注册
+ * @param {string} acc
+ * @param {string} pwd
+ * @param {string} name
+ * @param {string} code
+ * @returns
+ */
+export function userRegist(acc: string, pwd: string, name: string, code: string): Promise<UserRegistRes> {
+    return request.post(`/userEntity/userRegist?acc=${acc}&pwd=${pwd}&name=${name}&code=${code}`);
+}
+
+// 响应接口
+export interface UserChangeRes {
+    message: string;
+    success: boolean;
+    code: number;
+    data: Record<string, unknown>;
+}
+
+/**
+ * 修改密码
+ * @param {string} id
+ * @param {string} oldPwd
+ * @param {string} newPwd
+ * @returns
+ */
+export function userChange(id: string, oldPwd: string, newPwd: string): Promise<UserChangeRes> {
+    return request.post(`/userEntity/userChange?id=${id}&oldPwd=${oldPwd}&newPwd=${newPwd}`);
+}
+

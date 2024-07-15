@@ -83,17 +83,22 @@ public class UserController {
     @Operation(summary = "编辑")
     @PostMapping("/userEditor")
     public Result<?> userEditor(@RequestBody UserEntity userEntity) {
+//        userEntity.setPwd(DigestUtils.md5DigestAsHex(userEntity.getPwd().getBytes(StandardCharsets.UTF_8)));
         QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", userEntity.getId());
         //修改过名称
-        if (!Objects.equals(service.getOne(wrapper).getName(), userEntity.getName())) {
-            QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("user_name", userEntity.getName());
-            if (service.count(queryWrapper) != 0) {
-                return Result.failure("名称已存在");
-            }
+//        if (!Objects.equals(service.getOne(wrapper).getName(), userEntity.getName())) {
+//            QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>();
+//            queryWrapper.eq("user_name", userEntity.getName());
+//            if (service.count(queryWrapper) != 0) {
+//                return Result.failure("名称已存在");
+//            }
+//        }
+        if (service.updateById(userEntity)) {
+            UserEntity entity = service.getOne(wrapper);
+            return Result.success(entity);
         }
-        return Result.success(service.updateById(userEntity));
+        return Result.success("系统超时，失败");
     }
 
     @Operation(summary = "搜索")
@@ -147,11 +152,12 @@ public class UserController {
             return Result.failure("账号已存在，注册失败");
         }
         UserEntity user = new UserEntity();
+        pwd = DigestUtils.md5DigestAsHex(pwd.getBytes(StandardCharsets.UTF_8));
         user.setAcc(acc).setPhone(acc).setPwd(pwd).setName(name);
         if (service.save(user)) {
-            return Result.success("注册成功");
+            return Result.success("注册成功，请返回登录");
         }
-        return Result.success("注册失败");
+        return Result.success("系统超时，注册失败");
     }
 
     @Operation(summary = "找回密码")
@@ -160,22 +166,24 @@ public class UserController {
         if (!session.getAttribute("code").equals(code)) {
             return Result.failure("验证码错误");
         }
-
-
         HashMap<String, Object> hashMap = new HashMap<>();
         return Result.success("登录成功", hashMap);
     }
 
-    @Operation(summary = "找回密码")
+    @Operation(summary = "修改密码")
     @PostMapping("/userChange")
-    public Result<?> userChange(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
-        if (!session.getAttribute("code").equals(code)) {
-            return Result.failure("验证码错误");
+    public Result<?> userChange(@RequestParam String id, @RequestParam String oldPwd, @RequestParam String newPwd) {
+        UserEntity user = service.getById(id);
+        oldPwd = DigestUtils.md5DigestAsHex(oldPwd.getBytes(StandardCharsets.UTF_8));
+        if (!oldPwd.equals(user.getPwd())) {
+            return Result.failure("原密码错误");
         }
-
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        return Result.success("登录成功", hashMap);
+        newPwd = DigestUtils.md5DigestAsHex(newPwd.getBytes(StandardCharsets.UTF_8));
+        user.setPwd(newPwd);
+        if (service.updateById(user)) {
+            return Result.success("成功,请重新登陆");
+        }
+        return Result.success("系统超时，失败");
     }
 
 }

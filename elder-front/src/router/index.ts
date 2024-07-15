@@ -1,4 +1,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
+import {ElMessage, ElMessageBox} from 'element-plus'
+import type {Action} from 'element-plus'
 
 export const routes = [
     {
@@ -16,6 +18,25 @@ export const routes = [
         name: 'layout',
         redirect: '/home',
         component: () => import('../views/Layout.vue'),
+        meta: {requireAuth: true},
+        beforeEnter: (to, from, next) => {
+            //@ts-ignore
+            if (to.meta.requireAuth) { //判断是否需要授权
+                if (localStorage.getItem('token')) {
+                    next();
+                } else {
+                    ElMessageBox.alert('抱歉，请先登录，您无权限查看！', '提示', {
+                        confirmButtonText: '确认',
+                        callback: (action: Action) => {
+                            router.push('/');
+                            ElMessage.info({message: `已返回登录页`, grouping: true, showClose: true})
+                        },
+                    })
+                }
+            } else {
+                next();
+            }
+        },
         children: [
             {
                 path: '/home',

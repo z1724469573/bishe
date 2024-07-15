@@ -49,7 +49,18 @@
                   <el-input size="large" v-model="user.name" type="text" placeholder="请输入姓名"/>
                 </el-form-item>
                 <el-form-item label="验证码" prop="code" :rules="[{ required: true, message: '请输入验证码' }]">
-                  <el-input size="large" v-model="user.code" type="text" placeholder="请输入验证码"/>
+                  <el-row justify="space-between" style="width: 100%;">
+                    <el-col :span="16">
+                      <el-input size="large" placeholder="请输入验证码"
+                                v-model="user.code"
+                                autocomplete="off"
+                      />
+                    </el-col>
+                    <el-col :span="8">
+                      <el-image @click="getCode" style="cursor: pointer;width: 100%;height: 40px;"
+                                :src="codeSrc"></el-image>
+                    </el-col>
+                  </el-row>
                 </el-form-item>
                 <el-form-item label=" ">
                   <el-button size="large" style="width: 100%" type="primary" @click="submitForm(formRef)">
@@ -84,6 +95,7 @@ import api from "@/api";
 import router from "@/router"
 import type {FormInstance} from 'element-plus'
 import regist from "@/assets/swiper/2.952132ef.jpeg"
+import {ElMessage} from "element-plus";
 
 onMounted(() => {
   localStorage.setItem("activeIndex", "/home");
@@ -116,9 +128,14 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      console.log(user);
+      api.user.userRegist(user.phone, user.pwd, user.name, user.code).then((res) => {
+        if (res.success) {
+          resetForm(formEl);
+          router.push("/");
+        }
+        ElMessage({message: res.message, type: res.success ? 'success' : 'error', grouping: true, showClose: true})
+      })
     } else {
-      console.log('error submit!')
     }
   })
 }

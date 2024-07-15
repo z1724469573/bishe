@@ -100,7 +100,7 @@ onMounted(() => {
   localStorage.setItem("activeIndex", "/home");
   getCode();
 })
-
+const codeSrc = ref("");
 function getCode() {
   api.common.generateImageCode().then((res: any) => {
     const bufferUrl = btoa(
@@ -114,7 +114,6 @@ function getCode() {
 }
 
 const ruleFormRef = ref<FormInstance>()
-const codeSrc = ref("");
 const checkAcc = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入账号'))
