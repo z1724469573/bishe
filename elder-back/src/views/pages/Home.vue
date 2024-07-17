@@ -12,11 +12,26 @@
       </el-card>
     </el-col>
   </el-row>
-  <el-card style="margin-top: 10px;"></el-card>
+  <el-row :gutter="20">
+    <el-col :span="12">
+      <el-card style="margin-top: 10px;">
+        <el-text style="font-size: 20px;"><b>版本日志</b></el-text>
+        <el-steps direction="vertical" :space="90" style="margin-top: 20px;">
+          <el-step :icon="ArrowUpBold" title="系统初步开发完成，开始内测" description="2024-07-18 12:00:00"/>
+          <el-step :icon="ArrowUpBold" title="累了休息" description="2024-07-15 12:00:00"/>
+          <el-step :icon="ArrowUpBold" title="系统V2版本开始开发" description="2024-07-08 12:00:00"/>
+          <el-step :icon="ArrowUpBold" title="系统V1版本完成开发，代码全部提交" description="2024-03-02 12:00:00"/>
+        </el-steps>
+      </el-card>
+    </el-col>
+    <el-col :span="12">
+    </el-col>
+  </el-row>
 </template>
 
 <script setup lang="ts">
 import {ref} from "vue";
+import {ArrowUpBold} from '@element-plus/icons-vue'
 
 const data = ref([
   {name: 'A', value: {value: 110, itemStyle: {color: '#ffaa2e'}}},
@@ -90,5 +105,10 @@ const option_two = ref({
 <style scoped>
 .chart {
   height: 400px;
+}
+
+.el-steps svg {
+  transform: scale(1.6);
+  color: #aaa;
 }
 </style>

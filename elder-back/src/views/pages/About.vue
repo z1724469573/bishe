@@ -1,7 +1,9 @@
 <template>
   <el-row justify="center">
     <el-col :span="16">
-      <v-md-editor mode="preview" v-model="content"></v-md-editor>
+      <el-card shadow="never">
+        <v-md-editor mode="preview" v-model="content"></v-md-editor>
+      </el-card>
     </el-col>
   </el-row>
 </template>

@@ -1,8 +1,7 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside :width="isCollapse?'60px':'200px'"
-                style="border-right: 1px solid #ccc;box-shadow: #ccc 2px 2px 2px 2px;">
+      <el-aside :width="isCollapse?'60px':'200px'">
         <el-menu
             :collapse="isCollapse"
             @open="handleOpen"
@@ -183,9 +182,14 @@ const loginOut = () => {
   border-right: none;
 }
 
+.el-aside {
+  border-right: 1px solid #ddd;
+  box-shadow: #ddd 2px 2px 2px 2px;
+}
+
 .el-header {
-  border-bottom: 1px solid #ccc;
-  box-shadow: #ccc 2px 2px 2px 2px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: #ddd 2px 2px 2px 2px;
 }
 
 .el-main {
@@ -196,6 +200,39 @@ const loginOut = () => {
 
 :deep(.el-tooltip__trigger:focus-visible) {
   outline: unset;
+}
+
+/* 针对Webkit核心的浏览器（如Chrome和Safari） */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  /* 滚动条滑块的背景颜色 */
+  border-radius: 0;
+  /* 滑块的圆角 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* 滚动条轨道的背景颜色 */
+}
+
+scrollbar {
+  -moz-appearance: none;
+  width: 0;
+  height: 0;
+}
+
+scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 6px;
+}
+
+scrollbar-track {
+  background: #f1f1f1;
 }
 
 </style>
