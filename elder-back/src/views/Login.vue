@@ -58,10 +58,18 @@
                   <el-input placeholder="请输入密码" size="large" v-model="ruleForm.pwd" type="password" autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="验证码" prop="code">
-                  <el-input size="large" placeholder="请输入验证码"
-                            v-model="ruleForm.code"
-                            autocomplete="off"
-                  />
+                  <el-row justify="space-between">
+                    <el-col :span="12">
+                      <el-input size="large" placeholder="请输入验证码"
+                                v-model="ruleForm.code"
+                                autocomplete="off"
+                      />
+                    </el-col>
+                    <el-col :span="12">
+                      <el-image @click="getCode" style="cursor: pointer;width: 100%;height: 40px;"
+                                :src="codeSrc"></el-image>
+                    </el-col>
+                  </el-row>
                 </el-form-item>
                 <el-form-item label=" ">
                   <el-button size="large" style="width: 100%" type="primary" @click="submitForm(ruleFormRef)">
@@ -87,13 +95,28 @@ import {ElMessage} from "element-plus";
 import logo from "@/assets/logo.png"
 import login from "@/assets/login.4b369e29.png"
 import router from "@/router";
+import api from "@/api";
 
 onMounted(() => {
   localStorage.setItem("activeIndex", "/layout");
+  getCode();
 })
 
-const ruleFormRef = ref<FormInstance>()
+const codeSrc = ref("");
 
+function getCode() {
+  api.common.generateImageCode().then((res: any) => {
+    const bufferUrl = btoa(
+        new Uint8Array(res).reduce(
+            (data, byte) => data + String.fromCharCode(byte),
+            ""
+        )
+    );
+    codeSrc.value = "data:image/png;base64," + bufferUrl;
+  });
+}
+
+const ruleFormRef = ref<FormInstance>()
 const checkAcc = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入账号'))
@@ -129,11 +152,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate((valid) => {
     if (valid) {
-      ElMessage({message: 'submit', type: 'success', grouping: true, showClose: true})
-      console.log('submit!');
-      router.push("/home");
+      api.manager.managerLogin(ruleForm.acc, ruleForm.pwd, ruleForm.code).then((res) => {
+        ElMessage({message: res.message, type: res.success ? 'success' : 'error', grouping: true, showClose: true});
+        if (res.success) {
+          localStorage.setItem("manager", JSON.stringify(res.data.manager));
+          // localStorage.setItem("token", <string>res.data.token);
+          router.push("/home");
+        }
+      })
     } else {
-      console.log('error submit!');
     }
   })
 }
