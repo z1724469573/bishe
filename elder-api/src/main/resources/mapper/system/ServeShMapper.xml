@@ -8,14 +8,14 @@
         <result column="sh_serve_id" property="serveId" />
         <result column="sh_user_id" property="userId" />
         <result column="sh_date" property="date" />
-        <result column="sh_check" property="check" />
+        <result column="sh_checked" property="checked" />
         <result column="sh_advice" property="advice" />
         <result column="status" property="status" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        sh_id, sh_serve_id, sh_user_id, sh_date, sh_check, sh_advice, status
+        sh_id, sh_serve_id, sh_user_id, sh_date, sh_checked, sh_advice, status
     </sql>
 
 </mapper>
