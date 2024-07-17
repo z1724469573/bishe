@@ -112,6 +112,9 @@ public class UserController {
     @Operation(summary = "登录")
     @PostMapping("/userLogin")
     public Result<?> userLogin(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
+        if (session.getAttribute("code") == null) {
+            return Result.failure("验证码生成错误");
+        }
         if (!session.getAttribute("code").equals(code)) {
             return Result.failure("验证码错误");
         }

@@ -2,16 +2,21 @@ package com.example.elderapi.manager.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.elderapi.common.resp.Result;
+import com.example.elderapi.common.utils.JWTUtils;
 import com.example.elderapi.user.entity.ManagerEntity;
 import com.example.elderapi.user.entity.UserEntity;
 import com.example.elderapi.user.mapper.ManagerMapper;
 import com.example.elderapi.user.service.ManagerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -99,5 +104,37 @@ public class ManagerController {
         return Result.success(mapper.selectList(wrapper));
     }
 
+    @Operation(summary = "登录")
+    @PostMapping("/managerLogin")
+    public Result<?> managerLogin(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
+        if (session.getAttribute("code") == null) {
+            return Result.failure("验证码生成错误");
+        }
+        if (!session.getAttribute("code").equals(code)) {
+            return Result.failure("验证码错误");
+        }
+        QueryWrapper<ManagerEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("manager_acc", acc);
+        ManagerEntity manager = service.getOne(wrapper);
+        if (manager == null) {
+            return Result.failure("账号不存在，登陆失败");
+        }
+        if (manager.getStatus() == 0) {
+            return Result.failure("账号状态异常，请联系管理员处理");
+        }
+        pwd = DigestUtils.md5DigestAsHex(pwd.getBytes(StandardCharsets.UTF_8));
+        if (!pwd.equals(manager.getPwd())) {
+            return Result.failure("密码错误，登陆失败");
+        }
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", manager.getId().toString());
+        map.put("acc", manager.getAcc());
+        map.put("name", manager.getName());
+        String token = JWTUtils.generateToken(map);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("token", token);
+        hashMap.put("manager", manager);
+        return Result.success("登录成功", hashMap);
+    }
 
 }
