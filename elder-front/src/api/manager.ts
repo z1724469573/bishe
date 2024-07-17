@@ -123,4 +123,22 @@ export function managerSearch(name: string): Promise<ManagerSearchRes> {
     return request.post(`/managerEntity/managerSearch?name=${name}`);
 }
 
+// 响应接口
+export interface ManagerLoginRes {
+    message: string;
+    success: boolean;
+    code: number;
+    data: Record<string, unknown>;
+}
+
+/**
+ * 登录
+ * @param {string} acc
+ * @param {string} pwd
+ * @param {string} code
+ * @returns
+ */
+export function managerLogin(acc: string, pwd: string, code: string): Promise<ManagerLoginRes> {
+    return request.post(`/managerEntity/managerLogin?acc=${acc}&pwd=${pwd}&code=${code}`);
+}
 
