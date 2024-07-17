@@ -165,7 +165,7 @@ const classifySort = ref(0);
 const sortList = ref([]);
 const swiperList = ref([oneSW, twoSW]);
 const handleHots = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
+  // console.log(tab, event)
 }
 
 const handleSort = (tab: TabsPaneContext, event: Event) => {

@@ -25,7 +25,6 @@ onMounted(() => {
 const getActiveList = () => {
   api.active.activeList().then((res) => {
     activeList.value = res.data;
-    console.log(res.data);
   })
 }
 

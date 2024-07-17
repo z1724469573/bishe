@@ -15,7 +15,8 @@
                 <b style="font-size: 18px;color: #0753a2;">{{ active.phone }}</b>
               </el-descriptions-item>
             </el-descriptions>
-            <el-button style="width: 100%;margin-top: 20px;" size="large" plain type="primary" :disabled="isPast">
+            <el-button style="width: 100%;margin-top: 20px;" @click="handleActiveSh" size="large" plain type="primary"
+                       :disabled="isPast">
               <a v-if="!isPast">活动可报名</a>
               <a v-else>活动已结束</a>
             </el-button>
@@ -31,10 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import {useRoute} from 'vue-router'
 import api from "@/api";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
+import router from "@/router";
 
 const route = useRoute()
 const name = route.query.name;
@@ -47,7 +49,31 @@ onMounted(() => {
     const dateNow = new Date().getTime();
     isPast.value = dateEnd <= dateNow;
   })
+  if (localStorage.getItem("user")) {
+    myselfForm.value = JSON.parse(localStorage.getItem("user"));
+  }
 })
+
+const {appContext} = getCurrentInstance()!
+const myselfForm = ref({});
+const handleActiveSh = () => {
+  ElMessageBox.confirm('确认报名该活动吗?', '提示',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'info'
+      }, appContext)
+      .then(() => {
+        api.activeSh.activeShAppend(active.value.id, myselfForm.value.id).then((res) => {
+          ElMessage({message: res.message, type: res.success ? 'success' : 'error', grouping: true, showClose: true});
+          if (res.success) {
+            router.push("/activeSh")
+          }
+        })
+      })
+      .catch(() => {
+      })
+}
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -59,7 +85,6 @@ function formatDate(date) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-const activeList = ref([]);
 </script>
 
 <style scoped>

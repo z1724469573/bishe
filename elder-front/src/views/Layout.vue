@@ -19,7 +19,7 @@
           </el-menu>
         </el-col>
         <el-dropdown>
-          <el-row align="middle">
+          <el-row align="middle" style="cursor: pointer;">
             <el-avatar style="margin-right: 20px;" shape="square" :src="user.pic"/>
             <span>
                 {{ user.name }}
