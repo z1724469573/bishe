@@ -12,6 +12,10 @@
             :default-openeds="['2','3']"
             router
         >
+          <el-row justify="center" align="middle" style="height: 60px;">
+            <el-avatar shape="square" :src="logo" style="background-color: white;"></el-avatar>
+            <el-text v-if="!isCollapse"><b style="font-size: 18px;color: #0753a2;"> 社区养老管理</b></el-text>
+          </el-row>
           <el-menu-item index="/home" @click="handleMenu({name:'首页',path:'/home'})">
             <el-icon>
               <HomeFilled/>
@@ -51,9 +55,9 @@
       </el-aside>
       <el-container>
         <el-header>
-          <el-row style="width: 100%;height: 100%;" align="middle" justify="center">
-            <el-col :span="1">
-              <el-button plain @click="handleCollapse" link>
+          <el-row style="width: 100%;height: 100%;" align="middle" justify="space-between">
+            <el-row align="middle" justify="start">
+              <el-button plain @click="handleCollapse" link style="margin-right: 12px;">
                 <el-icon v-if="!isCollapse" style="transform: scale(2);">
                   <Fold/>
                 </el-icon>
@@ -61,38 +65,31 @@
                   <Expand/>
                 </el-icon>
               </el-button>
-            </el-col>
-            <el-col :span="7">
               <el-breadcrumb :separator-icon="ArrowRight">
                 <el-breadcrumb-item :to="{ path: '/home' }" @click="handleMenu({name:'首页',path:'/home'})">首页
                 </el-breadcrumb-item>
                 <el-breadcrumb-item v-if="currentMenu.name!=='首页'">{{ currentMenu.name }}</el-breadcrumb-item>
               </el-breadcrumb>
-            </el-col>
-            <el-col :span="12"></el-col>
-            <el-col :span="4">
-              <el-row align="middle" justify="center" :gutter="0">
-                <el-col :span="6">
-                  <el-avatar shape="square" :size="40" :src="squareUrl"/>
-                </el-col>
-                <el-col :span="16">
-                  <el-dropdown>
+            </el-row>
+            <el-dropdown>
                 <span class="el-dropdown-link">
-                  Dropdown List
-                  <el-icon class="el-icon--right">
-                    <arrow-down/>
-                  </el-icon>
+                  <el-row align="middle" style="cursor: pointer;">
+                    <el-avatar shape="square" :size="40" :src="squareUrl" style="margin-right: 10px;"/>
+                    <el-text size="large">
+                      {{ manager.name }}
+                    <el-icon class="el-icon--right">
+                      <arrow-down/>
+                    </el-icon>
+                    </el-text>
+                  </el-row>
                 </span>
-                    <template #dropdown>
-                      <el-dropdown-menu>
-                        <el-dropdown-item>个人中心</el-dropdown-item>
-                        <el-dropdown-item divided>退出登录</el-dropdown-item>
-                      </el-dropdown-menu>
-                    </template>
-                  </el-dropdown>
-                </el-col>
-              </el-row>
-            </el-col>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click="router.push('/myself')">个人中心</el-dropdown-item>
+                  <el-dropdown-item divided @click="loginOut">退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </el-row>
         </el-header>
         <el-main>
@@ -104,15 +101,21 @@
 </template>
 
 <script setup lang="ts">
-import {ArrowDown, Expand, Fold, Menu as IconMenu, HomeFilled, ArrowRight} from '@element-plus/icons-vue'
+import {ArrowDown, ArrowRight, Expand, Fold, HomeFilled, Menu as IconMenu} from '@element-plus/icons-vue'
 import {RouterView} from 'vue-router';
 import {onMounted, ref} from "vue";
+import router from "@/router";
+import logo from "@/assets/logo.png"
 
 onMounted(() => {
+  if (localStorage.getItem("manager")) {
+    manager.value = JSON.parse(localStorage.getItem("manager"));
+  }
   if (localStorage.getItem("currentMenu")) {
     currentMenu.value = JSON.parse(localStorage.getItem("currentMenu"));
   }
 })
+const manager = ref({});
 const currentMenu = ref({name: "首页", path: '/home'});
 const squareUrl = ref('https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png');
 const isCollapse = ref(false);
@@ -166,6 +169,11 @@ const system = [{
   path: '/about',
   name: '关于我们',
 },]
+
+const loginOut = () => {
+  localStorage.clear();
+  router.push('/');
+}
 
 </script>
 
