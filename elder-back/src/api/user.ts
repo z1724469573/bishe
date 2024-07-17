@@ -70,6 +70,7 @@ export function userDelete(id: number): Promise<UserDeleteRes> {
 // 参数接口
 export interface UserEditorParams {
     id?: number;
+    pic?: string;
     acc?: string;
     pwd?: string;
     name?: string;
