@@ -42,8 +42,8 @@ public class ServeShEntity extends Model<ServeShEntity> {
     private String date;
 
     @Schema(description = "审核")
-    @TableField("sh_check")
-    private String check;
+    @TableField("sh_checked")
+    private String checked;
 
     @Schema(description = "意见")
     @TableField("sh_advice")
