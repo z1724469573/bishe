@@ -37,7 +37,7 @@
                 <el-row justify="end" align="middle">
                   <el-col :span="10">
                     <div style="font-size: 14px;">
-                      还没有账号？前往
+                      管理员暂时不支持
                       <em style="font-style: normal;color: #0753a2;cursor: pointer;">注册</em>
                     </div>
                   </el-col>
