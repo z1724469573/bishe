@@ -136,9 +136,9 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <div class="dialog-footer" style="padding-right: 40px;">
-        <el-button @click="appendReset(appendRef)">关闭</el-button>
-        <el-button type="primary" @click="appendSubmit(appendRef)">
+      <div class="dialog-footer" style="padding-right: 80px;">
+        <el-button @click="appendReset(appendRef)" size="large">关闭</el-button>
+        <el-button type="primary" @click="appendSubmit(appendRef)" size="large">
           提交
         </el-button>
       </div>
@@ -202,9 +202,9 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="editorReset(editorRef)">关闭</el-button>
-        <el-button type="primary" @click="editorSubmit(editorRef)">
+      <div class="dialog-footer" style="padding-right: 80px;">
+        <el-button @click="editorReset(editorRef)" size="large">关闭</el-button>
+        <el-button type="primary" @click="editorSubmit(editorRef)" size="large">
           提交
         </el-button>
       </div>

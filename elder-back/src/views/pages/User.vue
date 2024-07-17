@@ -42,6 +42,20 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="name" label="名称"/>
+      <el-table-column align="center" prop="pic" label="头像">
+        <template #default="scope">
+          <el-image
+              style="width: 40px; height: 40px;"
+              :src="scope.row.pic"
+              preview-teleported
+              :max-scale="7"
+              :min-scale="0.2"
+              :zoom-rate="1.1"
+              :preview-src-list="[scope.row.pic]"
+              fit="cover"
+          />
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="sex" label="性别"/>
       <el-table-column align="center" prop="age" label="年龄"/>
       <el-table-column align="center" prop="phone" label="电话"/>
@@ -91,6 +105,22 @@
       <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
         <el-input placeholder="请输入名称" v-model="appendForm.name" autocomplete="off"/>
       </el-form-item>
+      <el-form-item label="头像" prop="pic" :rules="[{ required: true, message: '请输入封面' }]">
+        <el-upload
+            ref="appendUploadRef"
+            :limit="1"
+            :on-change="appendUpload"
+            :on-exceed="appendExceed"
+            :auto-upload="false"
+            :show-file-list="false"
+            list-type="picture"
+        >
+          <img v-if="imageSrc" :src="imageSrc" class="avatar" alt=" "/>
+          <!--          <template #trigger>-->
+          <!--            <el-button type="primary">上传头像</el-button>-->
+          <!--          </template>-->
+        </el-upload>
+      </el-form-item>
       <el-form-item label="性别" prop="sex" :rules="[{ required: true, message: '请选择性别' }]">
         <el-select v-model="appendForm.sex" placeholder="请选择性别">
           <el-option v-for="item in sexList" :key="item.value" :label="item.label" :value="item.value"/>
@@ -107,9 +137,9 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <div class="dialog-footer" style="padding-right: 40px;">
-        <el-button @click="appendReset(appendRef)">关闭</el-button>
-        <el-button type="primary" @click="appendSubmit(appendRef)">
+      <div class="dialog-footer" style="padding-right: 80px;">
+        <el-button @click="appendReset(appendRef)" size="large">关闭</el-button>
+        <el-button type="primary" @click="appendSubmit(appendRef)" size="large">
           提交
         </el-button>
       </div>
@@ -135,6 +165,22 @@
       <el-form-item label="名称" prop="name" :rules="[{ required: true, message: '请输入名称' }]">
         <el-input placeholder="请输入名称" v-model="editorForm.name" autocomplete="off"/>
       </el-form-item>
+      <el-form-item label="头像" prop="pic" :rules="[{ required: true, message: '请输入封面' }]">
+        <el-upload
+            ref="editorUploadRef"
+            :limit="1"
+            :on-change="editorUpload"
+            :on-exceed="editorExceed"
+            :auto-upload="false"
+            list-type="picture"
+            :show-file-list="false"
+        >
+          <img v-if="imageSrc" :src="imageSrc" class="avatar" alt=" "/>
+          <!--          <template #trigger>-->
+          <!--            <el-button type="primary">上传头像</el-button>-->
+          <!--          </template>-->
+        </el-upload>
+      </el-form-item>
       <el-form-item label="性别" prop="sex" :rules="[{ required: true, message: '请选择性别' }]">
         <el-select v-model="editorForm.sex" placeholder="请选择性别">
           <el-option v-for="item in sexList" :key="item.value" :label="item.label" :value="item.value"/>
@@ -156,9 +202,9 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="editorReset(editorRef)">关闭</el-button>
-        <el-button type="primary" @click="editorSubmit(editorRef)">
+      <div class="dialog-footer" style="padding-right: 80px;">
+        <el-button @click="editorReset(editorRef)" size="large">关闭</el-button>
+        <el-button type="primary" @click="editorSubmit(editorRef)" size="large">
           提交
         </el-button>
       </div>
@@ -169,7 +215,7 @@
 <script setup lang="ts">
 import {getCurrentInstance, onMounted, reactive, ref} from 'vue'
 import type {FormInstance, TableColumnCtx} from 'element-plus'
-import {ElMessage, ElMessageBox} from "element-plus";
+import {ElMessage, ElMessageBox, genFileId, UploadInstance, UploadProps, UploadRawFile} from "element-plus";
 import api from "@/api";
 import {UserEditorParams} from "@/api/user";
 
@@ -250,7 +296,11 @@ const multipleDelete = () => {
 const handleEdit = (index: number, row: UserEditorParams) => {
   //@ts-ignore
   editorForm.value = row;
+  if (row.pic != null) {
+    imageSrc.value = row.pic;
+  }
   editorDialog.value = true;
+
 }
 
 const editorDialog = ref(false);
@@ -282,6 +332,7 @@ const tableData = ref([]);
 const appendDialog = ref(false);
 const appendRef = ref<FormInstance>()
 const appendForm = reactive({
+  pic: "",
   acc: "",
   pwd: "",
   name: "",
@@ -318,6 +369,7 @@ const appendReset = (formEl: FormInstance | undefined) => {
 const editorRef = ref<FormInstance>()
 const editorForm = ref({
   id: '',
+  pic: '',
   acc: "",
   pwd: "",
   name: "",
@@ -354,8 +406,48 @@ const editorReset = (formEl: FormInstance | undefined) => {
 const statusList = [{label: '正常', value: 1}, {label: '禁用', value: 0}];
 const sexList = [{label: '男', value: '男'}, {label: '女', value: '女'}];
 
+const appendUploadRef = ref<UploadInstance>();
+const appendUpload = (e) => {
+  const file = new FormData();
+  file.append('file', e.raw);
+  api.common.upload(file).then((res) => {
+    typeof res === "string" ? appendForm.pic = res : "";
+    typeof res === "string" ? imageSrc.value = res : "";
+  })
+}
+const appendExceed: UploadProps['onExceed'] = (files) => {
+  appendUploadRef.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  appendUploadRef.value!.handleStart(file)
+}
+const imageSrc = ref("");
+const editorUploadRef = ref<UploadInstance>();
+const editorUpload = (e) => {
+  const file = new FormData();
+  file.append('file', e.raw);
+  api.common.upload(file).then((res) => {
+    typeof res === "string" ? editorForm.value.pic = res : "";
+    typeof res === "string" ? imageSrc.value = res : "";
+  })
+}
+const editorExceed: UploadProps['onExceed'] = (files) => {
+  editorUploadRef.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  editorUploadRef.value!.handleStart(file)
+}
+
 </script>
 
 <style scoped>
+:deep(.el-upload-list--picture) {
+  width: 408px;
+}
+
+:deep(.el-upload-list__item > img) {
+  width: 70px;
+  height: 70px;
+}
 
 </style>

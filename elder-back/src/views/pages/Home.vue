@@ -1,5 +1,5 @@
 <template>
-  <el-card style="font-size: 14px;color: #0753a2;"><b>您好，管理员！欢迎使用本系统！</b></el-card>
+  <el-card style="font-size: 16px;color: #0753a2;"><b>您好，管理员！欢迎使用本系统！</b></el-card>
   <el-row :gutter="20">
     <el-col :span="12">
       <el-card style="margin-top: 10px;">
