@@ -51,8 +51,10 @@ public class ActiveShController {
     static class ActiveShEntire {
         private Integer id;
         private Integer activeId;
+        private String activeName;
         private ActiveEntity active;
         private Integer userId;
+        private String userName;
         private UserEntity user;
         private String date;
         private String checked;
@@ -64,8 +66,8 @@ public class ActiveShController {
     private final UserService userService;
 
     @Operation(summary = "列表")
-    @GetMapping("/activeList")
-    public Result<?> activeList() {
+    @GetMapping("/activeShList")
+    public Result<?> activeShList() {
         List<ActiveShEntity> list = service.list();
         ArrayList<ActiveShEntire> shEntires = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
@@ -74,37 +76,30 @@ public class ActiveShController {
             BeanUtils.copyProperties(entity, entire);
             ActiveEntity active = activeService.getById(entity.getActiveId());
             UserEntity user = userService.getById(entity.getUserId());
-            entire.setActive(active).setUser(user);
+            entire.setActive(active).setActiveName(active.getName());
+            entire.setUser(user).setUserName(user.getName());
             shEntires.add(entire);
         }
         return Result.success(shEntires);
     }
 
-    @Data
-    static class ActiveSh {
-        private Integer activeId;
-        private Integer userId;
-        private String checked;
-        private String advice;
-    }
-
     @Operation(summary = "新增")
-    @PostMapping("/activeAppend")
-    public Result<?> activeAppend(@RequestBody ActiveSh active) {
+    @PostMapping("/activeShAppend")
+    public Result<?> activeShAppend(@RequestParam Integer activeId, @RequestParam Integer userId) {
         ActiveShEntity entity = new ActiveShEntity();
-        BeanUtils.copyProperties(active, entity);
+        entity.setActiveId(activeId).setUserId(userId);
         return Result.success(service.save(entity));
     }
 
     @Operation(summary = "删除")
-    @PostMapping("/activeDelete")
-    public Result<?> activeDelete(@RequestParam Integer id) {
+    @PostMapping("/activeShDelete")
+    public Result<?> activeShDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
     @Operation(summary = "编辑")
-    @PostMapping("/activeEditor")
-    public Result<?> activeEditor(@RequestBody ActiveShEntity activeEntity) {
+    @PostMapping("/activeShEditor")
+    public Result<?> activeShEditor(@RequestBody ActiveShEntity activeEntity) {
         return Result.success(service.updateById(activeEntity));
     }
 
@@ -112,8 +107,8 @@ public class ActiveShController {
     private final UserMapper userMapper;
 
     @Operation(summary = "搜索")
-    @PostMapping("/activeSearch")
-    public Result<?> activeSearch(@RequestParam String name) {
+    @PostMapping("/activeShSearch")
+    public Result<?> activeShSearch(@RequestParam String name) {
         ArrayList<ActiveShEntire> list = new ArrayList<>();
         // active
         QueryWrapper<ActiveEntity> wrapperA = new QueryWrapper<>();
@@ -129,9 +124,9 @@ public class ActiveShController {
                 ActiveShEntity shEntity = entityList.get(j);
                 ActiveShEntire activeShEntire = new ActiveShEntire();
                 BeanUtils.copyProperties(shEntity, activeShEntire);
-                activeShEntire.setActive(active);
+                activeShEntire.setActive(active).setActiveName(active.getName());
                 UserEntity user = userService.getById(shEntity.getUserId());
-                activeShEntire.setUser(user);
+                activeShEntire.setUser(user).setUserName(user.getName());
                 list.add(activeShEntire);
             }
         }
@@ -149,13 +144,33 @@ public class ActiveShController {
                 ActiveShEntity shEntity = entityList.get(j);
                 ActiveShEntire activeShEntire = new ActiveShEntire();
                 BeanUtils.copyProperties(shEntity, activeShEntire);
-                activeShEntire.setUser(user);
+                activeShEntire.setUser(user).setUserName(user.getName());
                 ActiveEntity active = activeService.getById(shEntity.getActiveId());
-                activeShEntire.setActive(active);
+                activeShEntire.setActive(active).setActiveName(active.getName());
                 list.add(activeShEntire);
             }
         }
         return Result.success(list);
+    }
+
+    @Operation(summary = "报名人")
+    @PostMapping("/activeShMyself")
+    public Result<?> activeShMyself(@RequestParam Integer userId) {
+        QueryWrapper<ActiveShEntity> wrapper = new QueryWrapper<>();
+        wrapper.eq("sh_user_id", userId);
+        List<ActiveShEntity> list = mapper.selectList(wrapper);
+        ArrayList<ActiveShEntire> shEntires = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            ActiveShEntity activeSh = list.get(i);
+            Integer activeId = activeSh.getActiveId();
+            ActiveEntity active = activeService.getById(activeId);
+            ActiveShEntire shEntire = new ActiveShEntire();
+            BeanUtils.copyProperties(activeSh, shEntire);
+            shEntire.setActive(active);
+            shEntire.setActiveName(active.getName());
+            shEntires.add(shEntire);
+        }
+        return Result.success(shEntires);
     }
 
 }
