@@ -156,7 +156,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         ElMessage({message: res.message, type: res.success ? 'success' : 'error', grouping: true, showClose: true});
         if (res.success) {
           localStorage.setItem("manager", JSON.stringify(res.data.manager));
-          // localStorage.setItem("token", <string>res.data.token);
+          localStorage.setItem("token", JSON.stringify(res.data.token));
           router.push("/home");
         }
       })
