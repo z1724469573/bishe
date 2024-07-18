@@ -72,6 +72,17 @@
     - 或者，如果你使用的是IntelliJ IDEA，可以直接在IDE中添加服务或手动运行`main`方法来启动。
 4. **启动前端服务**：`npm run dev` 或 `yarn dev`
 5. **访问应用**：在浏览器中输入 `http://localhost:3000`（前端端口）和 `http://localhost:8080`（后端端口）
+6. **Nginx配置**：
+   ```conf
+   location / {
+   root html;
+   index index.html index.htm;
+   }
+
+   location /images/ {
+       root  D:/XFXH;
+   }
+   ```
 
 ## **使用说明**
 
