@@ -4,6 +4,7 @@ import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.utils.JWTUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             JwtToken jwtToken = method.getAnnotation(JwtToken.class);
             if (jwtToken.required()) {
                 // 执行认证
-                if (token == null) {
+                if (ObjectUtils.isEmpty(token)) {
                     throw new RuntimeException("无token，请重新登录");
                 }
                 // 验证 token 是否有效

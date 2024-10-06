@@ -10,11 +10,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+
     @Bean
     public OpenAPI springShopOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("API管理系统")
-                        .contact(new Contact())
+                        .contact(new Contact().name("何福海").email("2109664977@qq.com"))
                         .description("API管理系统文档")
                         .version("v1.0")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))

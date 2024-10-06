@@ -1,6 +1,7 @@
 package com.example.elderapi.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.common.utils.JWTUtils;
 import com.example.elderapi.user.entity.UserEntity;
@@ -39,6 +40,7 @@ public class UserController {
         this.mapper = mapper;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/userList")
     public Result<?> userList() {
@@ -57,6 +59,7 @@ public class UserController {
         private String address;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/userAppend")
     public Result<?> userAppend(@RequestBody User user) {
@@ -74,12 +77,14 @@ public class UserController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/userDelete")
     public Result<?> userDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/userEditor")
     public Result<?> userEditor(@RequestBody UserEntity userEntity) {
@@ -101,6 +106,7 @@ public class UserController {
         return Result.success("系统超时，失败");
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/userSearch")
     public Result<?> userSearch(@RequestParam String name) {
@@ -163,6 +169,7 @@ public class UserController {
         return Result.success("系统超时，注册失败");
     }
 
+    @JwtToken
     @Operation(summary = "找回密码")
     @PostMapping("/userForget")
     public Result<?> userForget(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
@@ -173,6 +180,7 @@ public class UserController {
         return Result.success("登录成功", hashMap);
     }
 
+    @JwtToken
     @Operation(summary = "修改密码")
     @PostMapping("/userChange")
     public Result<?> userChange(@RequestParam String id, @RequestParam String oldPwd, @RequestParam String newPwd) {

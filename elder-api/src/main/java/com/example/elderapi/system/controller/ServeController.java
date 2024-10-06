@@ -2,6 +2,7 @@ package com.example.elderapi.system.controller;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.system.entity.ServeEntity;
 import com.example.elderapi.system.mapper.ServeMapper;
@@ -34,6 +35,7 @@ public class ServeController {
         this.mapper = mapper;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/serveList")
     public Result<?> serveList() {
@@ -47,6 +49,7 @@ public class ServeController {
         private String content;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/serveAppend")
     public Result<?> serveAppend(@RequestBody Serve serve) {
@@ -60,18 +63,21 @@ public class ServeController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/serveDelete")
     public Result<?> serveDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/serveEditor")
     public Result<?> serveEditor(@RequestBody ServeEntity serveEntity) {
         return Result.success(service.updateById(serveEntity));
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/serveSearch")
     public Result<?> serveSearch(@RequestParam String name) {

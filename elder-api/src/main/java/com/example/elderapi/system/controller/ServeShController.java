@@ -1,6 +1,7 @@
 package com.example.elderapi.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.system.entity.ActiveEntity;
 import com.example.elderapi.system.entity.ActiveShEntity;
@@ -67,6 +68,7 @@ public class ServeShController {
     private final ServeService serveService;
     private final UserService userService;
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/serveShList")
     public Result<?> serveShList() {
@@ -85,6 +87,7 @@ public class ServeShController {
         return Result.success(shEntires);
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/serveShAppend")
     public Result<?> serveShAppend(@RequestParam Integer serveId, @RequestParam Integer userId, @RequestParam String date) {
@@ -93,12 +96,14 @@ public class ServeShController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/serveShDelete")
     public Result<?> serveShDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/serveShEditor")
     public Result<?> serveShEditor(@RequestBody ServeShEntity serveShEntity) {
@@ -108,6 +113,7 @@ public class ServeShController {
     private final ServeMapper serveMapper;
     private final UserMapper userMapper;
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/serveShSearch")
     public Result<?> serveShSearch(@RequestParam String name) {
@@ -155,6 +161,7 @@ public class ServeShController {
         return Result.success(list);
     }
 
+    @JwtToken
     @Operation(summary = "报名人")
     @PostMapping("/serveShMyself")
     public Result<?> serveShMyself(@RequestParam Integer userId) {

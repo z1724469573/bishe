@@ -1,6 +1,7 @@
 package com.example.elderapi.system.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.system.entity.SortEntity;
 import com.example.elderapi.system.entity.SortNewsEntity;
@@ -40,6 +41,7 @@ public class SortNewsController {
         this.sortService = sortService;
     }
 
+    @JwtToken
     @Operation(summary = "最新")
     @GetMapping("/sortNewsLate")
     public Result<?> sortNewsLate() {
@@ -58,6 +60,7 @@ public class SortNewsController {
         return Result.success(listRs);
     }
 
+    @JwtToken
     @Operation(summary = "最热")
     @GetMapping("/sortNewsHots")
     public Result<?> sortNewsHots() {
@@ -89,6 +92,7 @@ public class SortNewsController {
         private Integer status;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/sortNewsList")
     public Result<?> sortNewsList() {
@@ -115,6 +119,7 @@ public class SortNewsController {
         private Integer looks;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/sortNewsAppend")
     public Result<?> sortNewsAppend(@RequestBody SortNews sortNews) {
@@ -128,18 +133,21 @@ public class SortNewsController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/sortNewsDelete")
     public Result<?> sortNewsDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/sortNewsEditor")
     public Result<?> sortNewsEditor(@RequestBody SortNewsEntity sortNewsEntity) {
         return Result.success(service.updateById(sortNewsEntity));
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/sortNewsSearch")
     public Result<?> sortNewsSearch(@RequestParam String name) {
@@ -148,6 +156,7 @@ public class SortNewsController {
         return Result.success(mapper.selectList(wrapper));
     }
 
+    @JwtToken
     @Operation(summary = "分类")
     @PostMapping("/sortNewsSort")
     public Result<?> sortNewsSort(@RequestParam String name) {

@@ -1,6 +1,7 @@
 package com.example.elderapi.manager.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.common.utils.JWTUtils;
 import com.example.elderapi.user.entity.ManagerEntity;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,7 @@ public class ManagerController {
         this.mapper = mapper;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/managerList")
     public Result<?> managerList() {
@@ -57,6 +60,7 @@ public class ManagerController {
         private String address;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/managerAppend")
     public Result<?> managerAppend(@RequestBody Manager manager) {
@@ -74,12 +78,14 @@ public class ManagerController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/managerDelete")
     public Result<?> managerDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/managerEditor")
     public Result<?> managerEditor(@RequestBody ManagerEntity managerEntity) {
@@ -96,6 +102,7 @@ public class ManagerController {
         return Result.success(service.updateById(managerEntity));
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/managerSearch")
     public Result<?> managerSearch(@RequestParam String name) {
@@ -107,7 +114,7 @@ public class ManagerController {
     @Operation(summary = "登录")
     @PostMapping("/managerLogin")
     public Result<?> managerLogin(@RequestParam String acc, @RequestParam String pwd, @RequestParam String code, HttpSession session) {
-        if (session.getAttribute("code") == null) {
+        if (ObjectUtils.isEmpty(session.getAttribute("code"))) {
             return Result.failure("验证码生成错误");
         }
         if (!session.getAttribute("code").equals(code)) {

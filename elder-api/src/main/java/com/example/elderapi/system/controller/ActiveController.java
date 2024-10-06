@@ -2,6 +2,7 @@ package com.example.elderapi.system.controller;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.system.entity.ActiveEntity;
 import com.example.elderapi.system.mapper.ActiveMapper;
@@ -34,6 +35,7 @@ public class ActiveController {
         this.mapper = mapper;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/activeList")
     public Result<?> activeList() {
@@ -51,6 +53,7 @@ public class ActiveController {
         private String cover;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/activeAppend")
     public Result<?> activeAppend(@RequestBody Active active) {
@@ -64,18 +67,21 @@ public class ActiveController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/activeDelete")
     public Result<?> activeDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/activeEditor")
     public Result<?> activeEditor(@RequestBody ActiveEntity activeEntity) {
         return Result.success(service.updateById(activeEntity));
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/activeSearch")
     public Result<?> activeSearch(@RequestParam String name) {

@@ -2,6 +2,7 @@ package com.example.elderapi.system.controller;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.elderapi.common.annotate.JwtToken;
 import com.example.elderapi.common.resp.Result;
 import com.example.elderapi.system.entity.NoticeEntity;
 import com.example.elderapi.system.mapper.NoticeMapper;
@@ -34,6 +35,7 @@ public class NoticeController {
         this.mapper = mapper;
     }
 
+    @JwtToken
     @Operation(summary = "列表")
     @GetMapping("/noticeList")
     public Result<?> noticeList() {
@@ -45,6 +47,7 @@ public class NoticeController {
         private String name;
     }
 
+    @JwtToken
     @Operation(summary = "新增")
     @PostMapping("/noticeAppend")
     public Result<?> noticeAppend(@RequestBody NoticeController.Notice notice) {
@@ -58,18 +61,21 @@ public class NoticeController {
         return Result.success(service.save(entity));
     }
 
+    @JwtToken
     @Operation(summary = "删除")
     @PostMapping("/noticeDelete")
     public Result<?> noticeDelete(@RequestParam Integer id) {
         return Result.success(service.removeById(id));
     }
 
+    @JwtToken
     @Operation(summary = "编辑")
     @PostMapping("/noticeEditor")
     public Result<?> noticeEditor(@RequestBody NoticeEntity noticeEntity) {
         return Result.success(service.updateById(noticeEntity));
     }
 
+    @JwtToken
     @Operation(summary = "搜索")
     @PostMapping("/noticeSearch")
     public Result<?> noticeSearch(@RequestParam String name) {

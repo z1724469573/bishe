@@ -54,7 +54,6 @@ public class TokenController {
         long s = (timeLag / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - minute * 60); //1秒 = 1000毫秒
         map.put("Token剩余时间", day + "天 " + hour + "时 " + minute + "分 " + s + "秒");
         //
-
         String acc = decodedJWT.getClaim("acc").asString();
         map.put("账号", acc);
         return Result.success("JWT 测试接口", map);
